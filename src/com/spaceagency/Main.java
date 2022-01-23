@@ -12,5 +12,6 @@ public class Main {
         
         commandCenter.addDevice(curiosity);
         commandCenter.connectTo(curiosity.getId());
+        // test
     }
 }

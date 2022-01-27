@@ -1,6 +1,7 @@
 package com.spaceagency.interfaces;
 
 public interface CommandCenter {
-	public void addDevice(Device device);
-	public void connectTo(String id);
+	void addDevice(Device device);
+	void connectTo(Device device);
+	void disconnectFrom(Device device);
 }

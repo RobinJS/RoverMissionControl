@@ -19,13 +19,26 @@ public class CommandCenter {
 		devices.put(device.getId(), device);
 	}
 	
-	public void connectTo(String id) {
-		// to do: stream online connection. Listen for connection lost
+	public String connectTo(Device device) {
+		/* to do: stream online connection. Listen for connection lost.
+		* return connection status. notify on success
+		* retry connection
+		* stay connected to multiple devices
+		* */
+		String id = device.getId();
+		
 		if (devices.containsKey(id)) {
-			System.out.println(String.format("Connecting to %s. Please, standby... ", id));
+			System.out.printf("Connecting to %s. Please, standby... %n", id);
+			return "SUCCESS";
 		}
 		else {
-			System.out.println(String.format("Id %s not registered.", id));
+			System.out.printf("Id %s not registered.%n", id);
+			return "UNAVAILABLE";
 		}
 	}
+	
+	public void disconnectFrom(Device device) {
+	
+	}
 }
+

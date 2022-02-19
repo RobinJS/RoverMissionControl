@@ -42,28 +42,30 @@ public class Menu {
 		
 		System.out.println("Enter 'help' to see available commands.");
 		
-        /*while (!input.equals("exit")) {
+        while (!input.equals("exit")) {
             input = in.nextLine();
 			
 			switch (input) {
 				case "exit": System.out.println("Exiting program..."); break;
 				case "help": printAllCommands(commands); break;
 				case "connect": connectCommand.execute(); break;
+				case "status":
+					System.out.println(commandCenter.getStatus());
 				default:
 					System.out.println("Invalid command.");
 			}
     
 //            System.out.println(s);
-        }*/
+        }
 		
 		
-		CommandCenter at = commandCenter;
+		/*CommandCenter at = commandCenter;
         for (Method m : at.getClass().getMethods()) {
            MenuItem mXY = (MenuItem)m.getAnnotation(MenuItem.class);
            if (mXY != null) {
 			   System.out.println("method: " + m.getName());
            }
-        }
+        }*/
 	}
 	
 	private static void printAllCommands(List<String> commands) {

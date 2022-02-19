@@ -1,5 +1,6 @@
 package com.spaceagency.instruments;
 
+import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.interfaces.Charger;
 
 import java.util.Timer;
@@ -8,10 +9,9 @@ import java.util.TimerTask;
 public class Battery {
 	private int percentage = 100;
 	private static final int MAX_CHARGE = 100;
-	private Charger charger;
+	private Charger charger; // to do: or directly SolarPanel?
 	private Timer timer;
-	private final int timeOffsetSec = 5;
-	private TimerTask task;
+	private final TimerTask task;
 	
 	public Battery() {
 		task = new TimerTask() {
@@ -21,7 +21,7 @@ public class Battery {
 			}
 		};
 		
-//		startCharging();
+		startCharging();
 	}
 	
 	private void charge() {
@@ -30,7 +30,7 @@ public class Battery {
 		
 		if (percentage == MAX_CHARGE) stopCharging();
 		
-		System.out.println(getStatus());
+//		System.out.println(getStatus());
 	}
 	
 	private void stopCharging() {
@@ -39,21 +39,23 @@ public class Battery {
 	}
 	
 	private void startCharging() {
+		int timeOffsetSec = 5;
 		timer = new Timer();
-		timer.schedule(task, timeOffsetSec*1000, timeOffsetSec*1000);
+		timer.schedule(task, timeOffsetSec * 1000, timeOffsetSec * 1000);
 	}
 	
 	public void consume(int requiredPower) {
 		percentage -= requiredPower;
 		if (percentage < 0) percentage = 0;
 		
-//		if (timer == null) startCharging();
+		if (timer == null) startCharging();
 	}
 	
 	public boolean hasPower(int requiredPower) {
 		return requiredPower <= percentage;
 	}
 	
+	@MenuItem
 	public String getStatus() {
 		return String.format("Battery: %s%%", percentage);
 	}

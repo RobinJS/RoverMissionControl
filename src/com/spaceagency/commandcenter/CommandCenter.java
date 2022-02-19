@@ -44,5 +44,9 @@ public class CommandCenter {
 	public void disconnect(Device device) {
 	
 	}
+	
+	public String getStatus() {
+		return devices.get("Curiosity").getStatus();
+	}
 }
 

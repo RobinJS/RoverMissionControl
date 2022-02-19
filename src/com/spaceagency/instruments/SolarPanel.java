@@ -1,5 +1,6 @@
 package com.spaceagency.instruments;
 
+import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.interfaces.Charger;
 
 public class SolarPanel extends ElectricalInstrument implements Charger {
@@ -10,27 +11,34 @@ public class SolarPanel extends ElectricalInstrument implements Charger {
 		super(consumedPower, battery);
 	}
 	
+	@MenuItem
 	public String getStatus() {
 		String statusWord = unfolded ? "unfolded" : "folded";
 		String producingWord = exposedToLight ? "yes" : "no";
-		return "Solar panel is " + statusWord + ". Exposed to light: " + exposedToLight; // to do json?
+		return "Solar panel is " + statusWord + ". Exposed to light: " + producingWord; // to do json?
 	}
 	
+	@MenuItem
 	public void unfold() { // bool
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
 			unfolded = true;
 			System.out.println("Solar Panel unfolded.");
 		}
-		// to do else... not enough power
+		else {
+			System.out.println("Cannot unfold solar panel. Not enough power.");
+		}
 	}
 	
+	@MenuItem
 	public void fold() {
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
 			unfolded = false;
 		}
-		// to do else... not enough power
+		else {
+			System.out.println("Cannot fold solar panel. Not enough power.");
+		}
 	}
 	
 	@Override

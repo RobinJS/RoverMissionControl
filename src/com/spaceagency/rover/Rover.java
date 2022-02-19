@@ -1,5 +1,6 @@
 package com.spaceagency.rover;
 
+import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.instruments.*;
 import com.spaceagency.interfaces.Device;
 import com.spaceagency.utils.Direction;
@@ -36,16 +37,17 @@ public class Rover implements Device {
 		activate();
 	}
 	
-	public void activate() {
+	private void activate() {
 		// calibration
 		// deploy antenna. no connection without antenna
 		
-		antenna.unfold();
 		solarPanel.unfold();
+		antenna.unfold();
 		
 		// send signal for successful activation
 	}
 	
+	@MenuItem
 	public void moveForward() {
 		// to do: check for obstacle
 		switch (direction) {
@@ -56,6 +58,7 @@ public class Rover implements Device {
 		}
 	}
 	
+	@MenuItem
 	public void moveBackward() {
 		// to do: check for obstacle
 		switch (direction) {
@@ -66,6 +69,7 @@ public class Rover implements Device {
 		}
 	}
 	
+	@MenuItem
 	public void turnLeft() {
 		switch (direction) {
 			case EAST -> direction = Direction.NORTH;
@@ -75,6 +79,7 @@ public class Rover implements Device {
 		}
 	}
 	
+	@MenuItem
 	public void turnRight() {
 		switch (direction) {
 			case EAST -> direction = Direction.SOUTH;
@@ -84,8 +89,9 @@ public class Rover implements Device {
 		}
 	}
 	
+	@MenuItem
 	public String getStatus() {
-		return battery.getStatus();
+		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
 	}
 	
 	

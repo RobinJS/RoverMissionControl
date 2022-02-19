@@ -1,5 +1,5 @@
 package com.spaceagency.interfaces;
 
-public interface Charger {
-	public boolean isOperational();
+public interface Charger extends Electrical {
+
 }

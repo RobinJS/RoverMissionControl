@@ -1,8 +1,8 @@
 package com.spaceagency.instruments;
 
-import com.spaceagency.instruments.Battery;
+import com.spaceagency.interfaces.Electrical;
 
-public class ElectricalInstrument {
+public abstract class ElectricalInstrument implements Electrical {
 	protected final int consumedPower;
 	protected Battery battery;
 	
@@ -11,4 +11,5 @@ public class ElectricalInstrument {
 		this.battery = battery;
 	}
 	
+	public abstract boolean isOperational();
 }

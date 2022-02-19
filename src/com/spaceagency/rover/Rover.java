@@ -1,9 +1,6 @@
 package com.spaceagency.rover;
 
-import com.spaceagency.instruments.Battery;
-import com.spaceagency.instruments.Camera;
-import com.spaceagency.instruments.SolarPannel;
-import com.spaceagency.instruments.WeatherStation;
+import com.spaceagency.instruments.*;
 import com.spaceagency.interfaces.Device;
 import com.spaceagency.utils.Direction;
 import com.spaceagency.utils.Position;
@@ -14,9 +11,10 @@ public class Rover implements Device {
 	private Direction direction;
 	
 	private Battery battery;
-	private SolarPannel solarPannel;
+	private SolarPanel solarPanel;
 	private Camera camera;
 	private WeatherStation weatherStation;
+	private Antenna antenna;
 	
 	public String getId() {
 		return id;
@@ -28,15 +26,24 @@ public class Rover implements Device {
 		this.direction = direction;
 		
 		battery = new Battery();
-		solarPannel = new SolarPannel(10, battery);
+		antenna = new Antenna(3, battery);
+		solarPanel = new SolarPanel(10, battery);
 		camera = new Camera(1, battery);
 		weatherStation = new WeatherStation(1, battery);
+		
+		battery.setCharger(solarPanel);
+		
+		activate();
 	}
 	
 	public void activate() {
 		// calibration
 		// deploy antenna. no connection without antenna
-		// deploy camera
+		
+		antenna.unfold();
+		solarPanel.unfold();
+		
+		// send signal for successful activation
 	}
 	
 	public void moveForward() {
@@ -77,7 +84,9 @@ public class Rover implements Device {
 		}
 	}
 	
-	
+	public String getStatus() {
+		return battery.getStatus();
+	}
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.spaceagency.commandcenter;
 
+import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.interfaces.Device;
 
 import java.util.HashMap;
@@ -19,13 +20,16 @@ public class CommandCenter {
 		devices.put(device.getId(), device);
 	}
 	
-	public String connectTo(Device device) {
+	@MenuItem
+	public String connect(Device device) {
+		System.out.println("conecting 123 ...");
 		/* to do: stream online connection. Listen for connection lost.
 		* return connection status. notify on success
 		* retry connection
 		* stay connected to multiple devices
 		* */
-		String id = device.getId();
+		return "";
+		/*String id = device.getId();
 		
 		if (devices.containsKey(id)) {
 			System.out.printf("Connecting to %s. Please, standby... %n", id);
@@ -34,10 +38,10 @@ public class CommandCenter {
 		else {
 			System.out.printf("Id %s not registered.%n", id);
 			return "UNAVAILABLE";
-		}
+		}*/
 	}
 	
-	public void disconnectFrom(Device device) {
+	public void disconnect(Device device) {
 	
 	}
 }

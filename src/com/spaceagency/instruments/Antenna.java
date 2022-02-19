@@ -1,14 +1,10 @@
 package com.spaceagency.instruments;
 
-public class SolarPannel extends ElectricalInstrument {
+public class Antenna extends ElectricalInstrument {
 	private String status = "unfolded";
 	
-	public SolarPannel(int consumedPower, Battery battery) {
+	public Antenna(int consumedPower, Battery battery) {
 		super(consumedPower, battery);
-	}
-	
-	public String getStatus() {
-		return status;
 	}
 	
 	public void unfold() {
@@ -16,7 +12,9 @@ public class SolarPannel extends ElectricalInstrument {
 			battery.consume(consumedPower);
 			status = "unfolded";
 		}
-		// to do else
+		else {
+			System.out.println("Cannot unfold antenna. Not enough power.");
+		}
 	}
 	
 	public void fold() {

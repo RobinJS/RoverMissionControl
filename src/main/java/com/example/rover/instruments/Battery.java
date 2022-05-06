@@ -1,6 +1,7 @@
 package com.example.rover.instruments;
 
 import com.example.rover.interfaces.Charger;
+import com.example.rover.utils.exceptions.NotEnoughPowerException;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,23 +17,15 @@ public class Battery {
 		task = new TimerTask() {
 			@Override
 			public void run() {
-				charge();
+				tryCharging();
 			}
 		};
-		
-		if (timer == null) startCharging();
+		startCharging();
 	}
 	
-	private void charge() {
+	private void tryCharging() {
 		if (charger != null && charger.isOperational() && percentage < MAX_CHARGE)
 			percentage++;
-		
-		if (percentage == MAX_CHARGE) stopCharging();
-	}
-	
-	private void stopCharging() {
-		timer.cancel();
-		timer = null;
 	}
 	
 	private void startCharging() {
@@ -41,15 +34,9 @@ public class Battery {
 		timer.schedule(task, timeOffsetSec * 1000, timeOffsetSec * 1000);
 	}
 	
-	public void consume(int requiredPower) {
-		percentage -= requiredPower;
-		if (percentage < 0) percentage = 0;
-		
-		if (timer == null) startCharging();
-	}
-	
-	public boolean hasPower(int requiredPower) {
-		return requiredPower <= percentage;
+	public void consume(int requiredPower) throws NotEnoughPowerException {
+		if (percentage >= requiredPower) percentage -= requiredPower;
+		else throw new NotEnoughPowerException();
 	}
 	
 	public String getStatus() {

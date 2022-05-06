@@ -1,5 +1,7 @@
 package com.example.rover.instruments;
 
+import com.example.rover.utils.exceptions.NotEnoughPowerException;
+
 public class Antenna extends ElectricalInstrument {
 	private boolean unfolded = false;
 	
@@ -13,25 +15,34 @@ public class Antenna extends ElectricalInstrument {
 		if (unfolded) {
 			message = "Antenna already unfolded.";
 		}
-		else if (battery.hasPower(consumedPower)) {
-			battery.consume(consumedPower);
-			unfolded = true;
-			message = "Antenna unfolded.";
-		}
 		else {
-			message = "Cannot unfold antenna. Not enough power.";
+			try	{
+				battery.consume(consumedPower);
+				unfolded = true;
+				message = "Antenna unfolded.";
+			} catch (NotEnoughPowerException e) {
+				message = "Cannot unfold antenna. " + e.getMessage();
+			}
 		}
 		
 		return message;
 	}
 	
 	public void fold() {
-		if (battery.hasPower(consumedPower)) {
-			battery.consume(consumedPower);
-			unfolded = false;
+		String message = "";
+		
+		if (!unfolded) {
+			message = "Antenna already folded.";
 		}
 		else {
-			System.out.println("Cannot fold antenna. Not enough power.");
+			try {
+				battery.consume(consumedPower);
+				unfolded = false;
+				message = "Antenna folded.";
+			}
+			catch (NotEnoughPowerException e) {
+				message = "Cannot fold antenna. " + e.getMessage();
+			}
 		}
 	}
 	

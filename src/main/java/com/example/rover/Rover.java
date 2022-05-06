@@ -4,9 +4,7 @@ import com.example.rover.instruments.*;
 import com.example.rover.interfaces.Device;
 import com.example.rover.utils.Direction;
 import com.example.rover.utils.Position;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Rover implements Device {
@@ -40,23 +38,21 @@ public class Rover implements Device {
 		weatherStation = new WeatherStation(1, battery);
 		
 		battery.setCharger(solarPanel);
-		
-//		activate();
 	}
 	
 	@GetMapping("/activate")
 	public Message activate(@RequestParam(value = "name", defaultValue = "") String name) {
 		// calibration
 		// deploy antenna. no connection without antenna
-		String message = "";
+		StringBuilder message = new StringBuilder();
 		
 		if (name.isEmpty()) {
-			message += solarPanel.unfold();
-			message += " ";
-			message += antenna.unfold();
+			message.append(solarPanel.unfold());
+			message.append(" ");
+			message.append(antenna.unfold());
 		}
 		
-		return new Message(message);
+		return new Message(message.toString());
 	}
 	
 	public void moveForward() {

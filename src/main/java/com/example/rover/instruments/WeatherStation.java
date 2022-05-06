@@ -1,5 +1,7 @@
 package com.example.rover.instruments;
 
+import com.example.rover.utils.exceptions.NotEnoughPowerException;
+
 import java.util.Locale;
 import java.util.Random;
 
@@ -10,17 +12,16 @@ public class WeatherStation extends ElectricalInstrument {
 	}
 	
 	public String getStatus() {
-		String status = "uknown";
+		String message = "uknown";
 		
-		if (battery.hasPower(consumedPower)) {
+		try	{
 			battery.consume(consumedPower);
-			status = "Environment - temp: " + getTemperatureInCelsius() + "C, humidity: " + getHumidity();
-		}
-		else {
-			System.out.println("Cannot get Environment status. Not enough power.");
+			message = "Environment - temp: " + getTemperatureInCelsius() + "C, humidity: " + getHumidity();
+		} catch (NotEnoughPowerException e) {
+			message = "Cannot get environment status. " + e.getMessage();
 		}
 		
-		return status;
+		return message;
 	}
 	
 	public float getTemperatureInCelsius() {
@@ -33,7 +34,7 @@ public class WeatherStation extends ElectricalInstrument {
 	}
 	
 	public int getHumidity() {
-		return new Random().nextInt(100-50) + 50;
+		return new Random().nextInt(50) + 50;
 	}
 	
 	@Override

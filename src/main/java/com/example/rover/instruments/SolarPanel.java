@@ -1,6 +1,7 @@
 package com.example.rover.instruments;
 
 import com.example.rover.interfaces.Charger;
+import com.example.rover.utils.exceptions.NotEnoughPowerException;
 
 public class SolarPanel extends ElectricalInstrument implements Charger {
 	private boolean unfolded = false;
@@ -22,26 +23,36 @@ public class SolarPanel extends ElectricalInstrument implements Charger {
 		if (unfolded) {
 			message = "Solar Panel already unfolded.";
 		}
-		else if (battery.hasPower(consumedPower)) {
-			battery.consume(consumedPower);
-			unfolded = true;
-			message = "Solar Panel unfolded.";
-		}
 		else {
-			message = "Cannot unfold solar panel. Not enough power.";
+			try	{
+				battery.consume(consumedPower);
+				unfolded = true;
+				message = "Solar Panel unfolded.";
+			} catch (NotEnoughPowerException e) {
+				message = "Cannot unfold Solar Panel. " + e.getMessage();
+			}
 		}
 		
 		return message;
 	}
 	
-	public void fold() {
-		if (battery.hasPower(consumedPower)) {
-			battery.consume(consumedPower);
-			unfolded = false;
+	public String fold() {
+		String message = "";
+		
+		if (unfolded) {
+			message = "Solar Panel already folded.";
 		}
 		else {
-			System.out.println("Cannot fold solar panel. Not enough power.");
+			try	{
+				battery.consume(consumedPower);
+				unfolded = false;
+				message = "Solar Panel folded.";
+			} catch (NotEnoughPowerException e) {
+				message = "Cannot fold Solar Panel. " + e.getMessage();
+			}
 		}
+		
+		return message;
 	}
 	
 	@Override

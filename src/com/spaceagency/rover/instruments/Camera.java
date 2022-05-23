@@ -1,4 +1,4 @@
-package com.spaceagency.instruments;
+package com.spaceagency.rover.instruments;
 
 public class Camera extends ElectricalInstrument {
 	

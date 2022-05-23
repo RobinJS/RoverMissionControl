@@ -1,4 +1,4 @@
-package com.spaceagency.utils;
+package com.spaceagency.rover.utils;
 
 public class Position {
 	public int x;

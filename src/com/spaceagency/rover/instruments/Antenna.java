@@ -1,6 +1,4 @@
-package com.spaceagency.instruments;
-
-import com.spaceagency.commandcenter.menu.MenuItem;
+package com.spaceagency.rover.instruments;
 
 public class Antenna extends ElectricalInstrument {
 	private boolean unfolded = false;
@@ -9,7 +7,6 @@ public class Antenna extends ElectricalInstrument {
 		super(consumedPower, battery);
 	}
 	
-	@MenuItem
 	public void unfold() {
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
@@ -21,7 +18,6 @@ public class Antenna extends ElectricalInstrument {
 		}
 	}
 	
-	@MenuItem
 	public void fold() {
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);

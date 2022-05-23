@@ -1,7 +1,6 @@
-package com.spaceagency.instruments;
+package com.spaceagency.rover.instruments;
 
-import com.spaceagency.commandcenter.menu.MenuItem;
-import com.spaceagency.interfaces.Charger;
+import com.spaceagency.rover.interfaces.Charger;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,7 +54,6 @@ public class Battery {
 		return requiredPower <= percentage;
 	}
 	
-	@MenuItem
 	public String getStatus() {
 		return String.format("Battery: %s%%", percentage);
 	}

@@ -1,7 +1,6 @@
-package com.spaceagency.instruments;
+package com.spaceagency.rover.instruments;
 
-import com.spaceagency.commandcenter.menu.MenuItem;
-import com.spaceagency.interfaces.Charger;
+import com.spaceagency.rover.interfaces.Charger;
 
 public class SolarPanel extends ElectricalInstrument implements Charger {
 	private boolean unfolded = false;
@@ -11,14 +10,12 @@ public class SolarPanel extends ElectricalInstrument implements Charger {
 		super(consumedPower, battery);
 	}
 	
-	@MenuItem
 	public String getStatus() {
 		String statusWord = unfolded ? "unfolded" : "folded";
 		String producingWord = exposedToLight ? "yes" : "no";
 		return "Solar panel is " + statusWord + ". Exposed to light: " + producingWord; // to do json?
 	}
 	
-	@MenuItem
 	public void unfold() { // bool
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
@@ -30,7 +27,6 @@ public class SolarPanel extends ElectricalInstrument implements Charger {
 		}
 	}
 	
-	@MenuItem
 	public void fold() {
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);

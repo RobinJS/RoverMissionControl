@@ -1,6 +1,4 @@
-package com.spaceagency.instruments;
-
-import com.spaceagency.commandcenter.menu.MenuItem;
+package com.spaceagency.rover.instruments;
 
 import java.util.Locale;
 import java.util.Random;
@@ -11,7 +9,6 @@ public class WeatherStation extends ElectricalInstrument {
 		super(consumedPower, battery);
 	}
 	
-	@MenuItem
 	public String getStatus() {
 		String status = "uknown";
 		

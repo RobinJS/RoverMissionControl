@@ -1,19 +1,34 @@
 package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.menu.MenuItem;
-import com.spaceagency.interfaces.Device;
+import com.spaceagency.rover.interfaces.Device;
 
 import java.util.HashMap;
 
 public class CommandCenter {
 	private static CommandCenter instance;
-	HashMap<String, Device> devices = new HashMap<>();
+	private HashMap<String, Device> devices = new HashMap<>();
+	private static Transmitter client;
 	
-	private CommandCenter() { }
+	public static void main(String[] args) {
+        CommandCenter commandCenter = new CommandCenter();
+		
+//		commandCenter.addDevice(curiosity);
+//		Menu menu = Menu.getInstance(commandCenter);
+		
+		client = new Transmitter();
+		client.startConnection("localhost", 1234);
+		System.out.println("Command center transmitting...");
+		String response = client.sendMessage("hello server 2");
+		System.out.println(response);
+		
+		terminateConenction(); // to do: on program close??
+	}
 	
-	public static CommandCenter getInstance() {
-		if (instance == null) instance = new CommandCenter();
-		return instance;
+	private CommandCenter() {}
+	
+	private static void terminateConenction() {
+		client.stopConnection();
 	}
 	
 	public void addDevice(Device device) {

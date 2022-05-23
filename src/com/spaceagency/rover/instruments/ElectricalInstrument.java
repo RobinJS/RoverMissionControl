@@ -1,6 +1,7 @@
-package com.spaceagency.instruments;
 
-import com.spaceagency.interfaces.Electrical;
+package com.spaceagency.rover.instruments;
+
+import com.spaceagency.rover.interfaces.Electrical;
 
 public abstract class ElectricalInstrument implements Electrical {
 	protected final int consumedPower;

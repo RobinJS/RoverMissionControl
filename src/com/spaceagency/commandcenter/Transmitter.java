@@ -1,7 +1,7 @@
 package com.spaceagency.commandcenter;
 
+import com.spaceagency.commandcenter.Command;
 import org.junit.Test;
-
 import java.io.*;
 import java.net.*;
 
@@ -22,6 +22,17 @@ public class Transmitter {
 			e.printStackTrace();
 		}
     }
+	
+	public String sendCommand(Command command) {
+		String resp = null;
+		try {
+			out.writeObject(command);
+			resp = in.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resp;
+	}
 
     public String sendMessage(String msg) {
         out.println(msg);

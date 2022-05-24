@@ -1,4 +1,4 @@
-package com.spaceagency.commandcenter;
+package com.spaceagency.common;
 
 import java.io.Serializable;
 
@@ -17,5 +17,9 @@ public class Command implements Serializable {
 	
 	public String getCommandName() {
 		return commandName;
+	}
+	
+	public String toString() {
+		return getExecutorName() + " " + getCommandName();
 	}
 }

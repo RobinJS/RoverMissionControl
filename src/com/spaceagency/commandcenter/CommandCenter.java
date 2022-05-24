@@ -1,8 +1,8 @@
 package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.menu.MenuItem;
+import com.spaceagency.common.Command;
 import com.spaceagency.rover.interfaces.Device;
-import com.spaceagency.commandcenter.Command;
 
 import java.util.HashMap;
 

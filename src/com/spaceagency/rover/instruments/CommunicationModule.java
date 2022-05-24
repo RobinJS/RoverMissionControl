@@ -1,12 +1,9 @@
 package com.spaceagency.rover.instruments;
 
+import com.spaceagency.common.Command;
+
 import java.io.*;
 import java.net.*;
-
-public interface Command {
-	String moduleName;
-	String commandName;
-}
 
 public class CommunicationModule {
 	private ServerSocket serverSocket;
@@ -44,18 +41,21 @@ public class CommunicationModule {
 				InputStream inputStream = clientSocket.getInputStream();
 				in = new ObjectInputStream(inputStream);
 				
-				Command command;
-				while ((command = in.readObject()) != null) {
-					
-					out.println("recieved command " + command.toString());
-					System.out.println("from client: " + "");
-				}
+				Command command = (Command) in.readObject();
+				System.out.println("recieved command " + command.toString());
+//				while ((command = (Command) in.readObject()) != null) {
+//
+//					out.println("recieved command " + command.toString());
+//					System.out.println("from client: " + "");
+//				}
 				
 				in.close();
 				out.close();
 				clientSocket.close();
 				System.out.println("client socket closed");
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}

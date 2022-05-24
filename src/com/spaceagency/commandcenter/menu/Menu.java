@@ -1,7 +1,6 @@
 package com.spaceagency.commandcenter.menu;
 
 import com.spaceagency.commandcenter.CommandCenter;
-import com.spaceagency.rover.interfaces.Command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Scanner;
 
 public class Menu {
 	private static Menu instance;
-	private static Command connectCommand;
+//	private static Command connectCommand;
 	private static CommandCenter commandCenter;
 	
 	private Menu(CommandCenter commandCenter) {
@@ -28,7 +27,7 @@ public class Menu {
 	}
 	
 	private static void init() {
-		connectCommand = new ConnectCommand(commandCenter);
+//		connectCommand = new ConnectCommand(commandCenter);
 		
 		Scanner in = new Scanner(System.in);
         String input = "";
@@ -43,7 +42,7 @@ public class Menu {
 			switch (input) {
 				case "exit": System.out.println("Exiting program..."); break;
 				case "help": printAllCommands(commands); break;
-				case "connect": connectCommand.execute(); break;
+//				case "connect": connectCommand.execute(); break;
 				case "status":
 					System.out.println(commandCenter.getStatus());
 				default:

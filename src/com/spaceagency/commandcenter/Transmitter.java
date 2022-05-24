@@ -1,7 +1,7 @@
 package com.spaceagency.commandcenter;
 
-import com.spaceagency.commandcenter.Command;
-import org.junit.Test;
+import com.spaceagency.common.Command;
+
 import java.io.*;
 import java.net.*;
 
@@ -35,16 +35,16 @@ public class Transmitter {
 		return resp;
 	}
 
-    public String sendMessage(String msg) {
-        out.println(msg);
-		String resp = null;
-		try {
-			resp = in.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return resp;
-    }
+//    public String sendMessage(String msg) {
+//        out.println(msg);
+//		String resp = null;
+//		try {
+//			resp = in.readLine();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return resp;
+//    }
 
     public void stopConnection() {
 		try {
@@ -56,13 +56,13 @@ public class Transmitter {
 		}
     }
 	
-	@Test
-	public void givenGreetingClient_whenServerRespondsWhenStarted_thenCorrect() {
-		System.out.println("Test...");
-		Transmitter client = new Transmitter();
-		client.startConnection("127.0.0.1", 1234);
-		String response = client.sendMessage("hello server");
-		System.out.println("response " + response);
-//		assertEquals("hello client", response);
-	}
+//	@Test
+//	public void givenGreetingClient_whenServerRespondsWhenStarted_thenCorrect() {
+//		System.out.println("Test...");
+//		Transmitter client = new Transmitter();
+//		client.startConnection("127.0.0.1", 1234);
+//		String response = client.sendMessage("hello server");
+//		System.out.println("response " + response);
+////		assertEquals("hello client", response);
+//	}
 }

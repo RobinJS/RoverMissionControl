@@ -2,6 +2,7 @@ package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.rover.interfaces.Device;
+import com.spaceagency.commandcenter.Command;
 
 import java.util.HashMap;
 
@@ -19,7 +20,8 @@ public class CommandCenter {
 		client = new Transmitter();
 		client.startConnection("localhost", 1234);
 		System.out.println("Command center transmitting...");
-		String response = client.sendMessage("hello server 2");
+// 		String response = client.sendMessage("hello server 2");
+		String response = client.sendCommand(new Command("rover", "getstatus"));
 		System.out.println(response);
 		
 		terminateConenction(); // to do: on program close??

@@ -9,12 +9,11 @@ public class CommunicationModule {
 	public void start(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
-        while (true)
-            new EchoClientHandler(serverSocket.accept()).start();
+        		while (true) new EchoClientHandler(serverSocket.accept()).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 
     public void stop() {
 		try {

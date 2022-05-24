@@ -31,7 +31,7 @@ public class CommunicationModule {
 	private static class EchoClientHandler extends Thread {
         private Socket clientSocket;
         private PrintWriter out;
-        private BufferedReader in;
+        private ObjectInputStream in;
 
         public EchoClientHandler(Socket socket) {
             this.clientSocket = socket;
@@ -41,17 +41,14 @@ public class CommunicationModule {
 			System.out.println("run");
 			try {
 				out = new PrintWriter(clientSocket.getOutputStream(), true);
-				in = new BufferedReader(
-						new InputStreamReader(clientSocket.getInputStream()));
+				InputStream inputStream = clientSocket.getInputStream();
+				in = new ObjectInputStream(inputStream);
 				
-				String inputLine;
-				while ((inputLine = in.readLine()) != null) {
-					if (".".equals(inputLine)) {
-						out.println("bye");
-						break;
-					}
-					out.println(inputLine);
-					System.out.println("from client: " + inputLine);
+				Command command;
+				while ((command = in.readObject()) != null) {
+					
+					out.println("recieved command " + command.toString());
+					System.out.println("from client: " + "");
 				}
 				
 				in.close();

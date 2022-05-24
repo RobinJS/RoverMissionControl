@@ -3,6 +3,11 @@ package com.spaceagency.rover.instruments;
 import java.io.*;
 import java.net.*;
 
+public interface Command {
+	String moduleName;
+	String commandName;
+}
+
 public class CommunicationModule {
 	private ServerSocket serverSocket;
 	

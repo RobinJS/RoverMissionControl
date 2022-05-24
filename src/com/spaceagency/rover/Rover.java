@@ -47,13 +47,8 @@ public class Rover implements Device {
 	}
 	
 	private void activate() {
-		// calibration
-		// deploy antenna. no connection without antenna
-		
 		solarPanel.unfold();
 		antenna.unfold();
-		
-		// send signal for successful activation
 	}
 	
 //	@MenuItem

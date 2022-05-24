@@ -3,13 +3,19 @@ package com.spaceagency.commandcenter;
 import java.io.Serializable;
 
 public class Command implements Serializable {
-	private final String text;
+	private final String executorName;
+	private final String commandName;
 	
-	public Command(String text) {
-		this.text = text;
+	public Command(String executorName, String commandName) {
+		this.executorName = executorName;
+		this.commandName = commandName;
 	}
 	
-	public String getText() {
-		return text;
+	public String getExecutorName() {
+		return executorName;
+	}
+	
+	public String getCommandName() {
+		return commandName;
 	}
 }

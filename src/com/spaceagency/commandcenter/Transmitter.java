@@ -9,13 +9,14 @@ import static org.junit.Assert.assertEquals;
 
 public class Transmitter {
 	private Socket clientSocket;
-    private PrintWriter out;
+    private ObjectOutputStream out;
     private BufferedReader in;
 
     public void startConnection(String ip, int port) {
 		try {
 			clientSocket = new Socket(ip, port);
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
+			OutputStream outputStream = clientSocket.getOutputStream();
+			out = new ObjectOutputStream(outputStream);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			System.out.println(String.format("Connected to %s:%s", ip, port));
 		} catch (IOException e) {

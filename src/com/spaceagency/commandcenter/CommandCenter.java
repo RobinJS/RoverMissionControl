@@ -1,69 +1,71 @@
 package com.spaceagency.commandcenter;
 
-import com.spaceagency.commandcenter.menu.MenuItem;
+import com.spaceagency.commandcenter.menu.ConsoleMenu;
 import com.spaceagency.common.Command;
-import com.spaceagency.rover.interfaces.Device;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandCenter {
-	private static CommandCenter instance;
-	private HashMap<String, Device> devices = new HashMap<>();
-	private static Transmitter client;
+	private Transmitter transmitter;
+	private Device device;
+	List<String> commands = new ArrayList<String>(Arrays.asList("exit", "help", "connect"));
 	
-	public static void main(String[] args) {
-        CommandCenter commandCenter = new CommandCenter();
-		
-//		commandCenter.addDevice(curiosity);
-//		Menu menu = Menu.getInstance(commandCenter);
-		
-		client = new Transmitter();
-		client.startConnection("localhost", 1234);
-		System.out.println("Command center transmitting...");
-// 		String response = client.sendMessage("hello server 2");
-		String response = client.sendCommand(new Command("rover", "getstatus"));
-		System.out.println(response);
-		
-		terminateConenction(); // to do: on program close??
-	}
-	
-	private CommandCenter() {}
-	
-	private static void terminateConenction() {
-		client.stopConnection();
-	}
-	
-	public void addDevice(Device device) {
-		devices.put(device.getId(), device);
-	}
-	
-	@MenuItem
-	public String connect(Device device) {
-		System.out.println("conecting 123 ...");
-		/* to do: stream online connection. Listen for connection lost.
+	// to do: database with devices to connect to. add/remove device
+	/* to do: stream online connection. Listen for connection lost.
 		* return connection status. notify on success
 		* retry connection
 		* stay connected to multiple devices
-		* */
-		return "";
-		/*String id = device.getId();
+	* */
+	
+	public static void main(String[] args) {
+        CommandCenter commandCenter = new CommandCenter();
+	}
+	
+	private CommandCenter() {
+		transmitter = new Transmitter();
+		ConsoleMenu menu = ConsoleMenu.getInstance();
+		device = new Device("Curiosity", "localhost", 1234);
 		
-		if (devices.containsKey(id)) {
-			System.out.printf("Connecting to %s. Please, standby... %n", id);
-			return "SUCCESS";
+		while(true) { // to do
+			onCommandEntered(menu.getNextCommand());
 		}
-		else {
-			System.out.printf("Id %s not registered.%n", id);
-			return "UNAVAILABLE";
-		}*/
 	}
 	
-	public void disconnect(Device device) {
-	
+	private void onCommandEntered(String input) {
+		switch (input) {
+			case "connect": connect(); break;
+			case "disconnect": disconnect(); break;
+			case "help": printAllCommands(); break;
+			case "status": sendCommand(input); break;
+			default:
+				System.out.println("Invalid command.");
+		}
 	}
 	
-	public String getStatus() {
-		return devices.get("Curiosity").getStatus();
+	private void disconnect() {
+		transmitter.disconnectWith(device);
 	}
+	
+	private void connect() {
+		transmitter.connectWith(device);
+	}
+	
+	private void sendCommand(String command) {
+		String response = transmitter.sendCommand(new Command("rover", command));
+		
+		System.out.println(response);
+		
+	}
+	
+	private static void printAllCommands() {
+//		for (String c : commands) {
+//			System.out.print(c + " ");
+//		}
+		System.out.println("all commands...");
+	}
+	
+	
 }
 

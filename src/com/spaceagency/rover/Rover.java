@@ -2,11 +2,10 @@ package com.spaceagency.rover;
 
 //import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.rover.instruments.*;
-import com.spaceagency.rover.interfaces.Device;
 import com.spaceagency.rover.utils.Direction;
 import com.spaceagency.rover.utils.Position;
 
-public class Rover implements Device {
+public class Rover {
 	private final String id;
 	private Position position;
 	private Direction direction;

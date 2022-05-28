@@ -10,6 +10,6 @@ public class ConnectCommand {
 	}
 	
 	public void execute() {
-		commandCenter.connect(null);
+	
 	}
 }

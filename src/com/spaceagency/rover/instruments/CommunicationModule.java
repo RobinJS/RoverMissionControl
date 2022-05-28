@@ -11,7 +11,7 @@ public class CommunicationModule {
 	public void start(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
-        		while (true) new EchoClientHandler(serverSocket.accept()).start();
+        		while (true) new ClientHandler(serverSocket.accept()).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -25,37 +25,39 @@ public class CommunicationModule {
 		}
     }
 	
-	private static class EchoClientHandler extends Thread {
+	private static class ClientHandler extends Thread {
         private Socket clientSocket;
         private PrintWriter out;
         private ObjectInputStream in;
 
-        public EchoClientHandler(Socket socket) {
+        public ClientHandler(Socket socket) {
             this.clientSocket = socket;
         }
 
         public void run() {
-			System.out.println("run");
 			try {
 				out = new PrintWriter(clientSocket.getOutputStream(), true);
 				InputStream inputStream = clientSocket.getInputStream();
 				in = new ObjectInputStream(inputStream);
 				
-				Command command = (Command) in.readObject();
-				System.out.println("recieved command " + command.toString());
-//				while ((command = (Command) in.readObject()) != null) {
-//
-//					out.println("recieved command " + command.toString());
-//					System.out.println("from client: " + "");
-//				}
+				System.out.println("New connection.");
+				
+				Command command;
+				while ((command = (Command) in.readObject()) != null) {
+
+					System.out.println("recieved command " + command.getExecutorName() + " " + command.getCommandName());
+					out.println("recieved command " + command.toString());
+				}
 				
 				in.close();
 				out.close();
 				clientSocket.close();
 				System.out.println("client socket closed");
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("Lost connection with Command Center.");
+//				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
+				System.out.println("Unidentified command.");
 				e.printStackTrace();
 			}
 		}

@@ -12,14 +12,19 @@ public class Transmitter {
     private ObjectOutputStream out;
     private BufferedReader in;
 
-    public void startConnection(String ip, int port) {
+    public void connectWith(Device device) {
+		String url = device.getUrl();
+		int port = device.getPort();
+		
 		try {
-			clientSocket = new Socket(ip, port);
+			clientSocket = new Socket(url, port);
 			OutputStream outputStream = clientSocket.getOutputStream();
 			out = new ObjectOutputStream(outputStream);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			System.out.println(String.format("Connected to %s:%s", ip, port));
+			System.out.printf("Connected to %s:%s%n", url, port);
 		} catch (IOException e) {
+			System.out.printf("Could not connected to %s:%s%n", url, port);
+			// to do: more info
 			e.printStackTrace();
 		}
     }
@@ -46,13 +51,18 @@ public class Transmitter {
 //		return resp;
 //    }
 
-    public void stopConnection() {
+    public void disconnectWith(Device device) {
+		String url = device.getUrl();
+		int port = device.getPort();
+		
 		try {
 			in.close();
 			out.close();
 			clientSocket.close();
+			System.out.printf("Disconnected with %s:%s%n", url, port);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.printf("Could not disconnected with %s:%s%n", url, port);
 		}
     }
 	

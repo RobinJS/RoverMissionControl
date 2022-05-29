@@ -1,8 +1,10 @@
 package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.menu.ConsoleMenu;
+import com.spaceagency.commandcenter.menu.MenuItem;
 import com.spaceagency.common.Command;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +30,7 @@ public class CommandCenter {
 		ConsoleMenu menu = ConsoleMenu.getInstance();
 		device = new Device("Curiosity", "localhost", 1234);
 		
-		while(true) { // to do
+		while(true) { // todo
 			onCommandEntered(menu.getNextCommand());
 		}
 	}
@@ -44,11 +46,13 @@ public class CommandCenter {
 		}
 	}
 	
-	private void disconnect() {
+	@MenuItem
+	public void disconnect() {
 		transmitter.disconnectWith(device);
 	}
 	
-	private void connect() {
+	@MenuItem
+	public void connect() {
 		transmitter.connectWith(device);
 	}
 	
@@ -56,7 +60,6 @@ public class CommandCenter {
 		String response = transmitter.sendCommand(new Command("rover", command));
 		
 		System.out.println(response);
-		
 	}
 	
 	private static void printAllCommands() {

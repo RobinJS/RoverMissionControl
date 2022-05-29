@@ -1,12 +1,18 @@
 package com.spaceagency.rover.instruments;
 
 import com.spaceagency.common.Command;
+import com.spaceagency.rover.CommandExecutor;
 
 import java.io.*;
 import java.net.*;
 
 public class CommunicationModule {
 	private ServerSocket serverSocket;
+	private static CommandExecutor commandExecutor;
+	
+	public  CommunicationModule(CommandExecutor commandExecutor) {
+		this.commandExecutor = commandExecutor;
+	}
 	
 	public void start(int port) {
 		try {
@@ -29,9 +35,11 @@ public class CommunicationModule {
         private Socket clientSocket;
         private PrintWriter out;
         private ObjectInputStream in;
+//		private CommandExecutor commandExecutor;
 
         public ClientHandler(Socket socket) {
             this.clientSocket = socket;
+//			this.commandExecutor = commandExecutor;
         }
 
         public void run() {
@@ -44,9 +52,9 @@ public class CommunicationModule {
 				
 				Command command;
 				while ((command = (Command) in.readObject()) != null) {
-
-					System.out.println("recieved command " + command.getExecutorName() + " " + command.getCommandName());
-					out.println("recieved command " + command.toString());
+					String response = commandExecutor.runCommand(command);
+//
+					out.println("recieved command " + response.toString());
 				}
 				
 				in.close();

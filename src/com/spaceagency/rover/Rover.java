@@ -1,6 +1,7 @@
 package com.spaceagency.rover;
 
 //import com.spaceagency.commandcenter.menu.MenuItem;
+import com.spaceagency.common.Command;
 import com.spaceagency.rover.instruments.*;
 import com.spaceagency.rover.utils.Direction;
 import com.spaceagency.rover.utils.Position;
@@ -15,7 +16,7 @@ public class Rover {
 	private Camera camera;
 	private WeatherStation weatherStation;
 	private Antenna antenna;
-	private CommunicationModule communicationModule;
+	private static CommunicationModule communicationModule;
 	
 	public String getId() {
 		return id;
@@ -23,7 +24,9 @@ public class Rover {
 	
 	public static void main(String[] args) {
 		int port = 1234;
-		Rover curiosity = new Rover("Curiosity", new Position(0, 0), Direction.EAST, port);
+		Rover rover = new Rover("Curiosity", new Position(0, 0), Direction.EAST, port);
+		communicationModule = new CommunicationModule(new CommandExecutor(rover));
+		communicationModule.start(port);
 	}
 	
 	private Rover(String id, Position initialPosition, Direction direction, int port) {
@@ -36,13 +39,11 @@ public class Rover {
 		solarPanel = new SolarPanel(10, battery);
 		camera = new Camera(1, battery);
 		weatherStation = new WeatherStation(1, battery);
-		communicationModule = new CommunicationModule();
 		
 		battery.setCharger(solarPanel);
 		
 		activate();
 		
-		communicationModule.start(port);
 	}
 	
 	private void activate() {
@@ -52,7 +53,7 @@ public class Rover {
 	
 //	@MenuItem
 	public void moveForward() {
-		// to do: check for obstacle
+		// todo: check for obstacle
 		switch (direction) {
 			case EAST -> position.x += 1;
 			case WEST -> position.x -= 1;
@@ -63,7 +64,7 @@ public class Rover {
 	
 //	@MenuItem
 	public void moveBackward() {
-		// to do: check for obstacle
+		// todo: check for obstacle
 		switch (direction) {
 			case EAST -> position.x -= 1;
 			case WEST -> position.x += 1;

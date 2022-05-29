@@ -1,13 +1,6 @@
 package com.spaceagency.commandcenter.menu;
 
-import com.spaceagency.commandcenter.Transmitter;
-import com.spaceagency.common.Command;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public class ConsoleMenu {
 	private static ConsoleMenu instance;

@@ -24,7 +24,7 @@ public class Transmitter {
 			System.out.printf("Connected to %s:%s%n", url, port);
 		} catch (IOException e) {
 			System.out.printf("Could not connected to %s:%s%n", url, port);
-			// to do: more info
+			// todo: more info
 			e.printStackTrace();
 		}
     }

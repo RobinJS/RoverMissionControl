@@ -34,7 +34,7 @@ public class CommunicationModule {
 	private static class ClientHandler extends Thread {
         private Socket clientSocket;
         private PrintWriter out;
-        private ObjectInputStream in;
+        private BufferedReader in;
 //		private CommandExecutor commandExecutor;
 
         public ClientHandler(Socket socket) {
@@ -46,15 +46,14 @@ public class CommunicationModule {
 			try {
 				out = new PrintWriter(clientSocket.getOutputStream(), true);
 				InputStream inputStream = clientSocket.getInputStream();
-				in = new ObjectInputStream(inputStream);
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				
 				System.out.println("New connection.");
 				
-				Command command;
-				while ((command = (Command) in.readObject()) != null) {
+				String command;
+				while ((command = (String) in.readLine()) != null) {
 					String response = commandExecutor.runCommand(command);
-//
-					out.println("recieved command " + response.toString());
+					out.println("recieved command " + response);
 				}
 				
 				in.close();

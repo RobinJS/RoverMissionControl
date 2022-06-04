@@ -3,15 +3,27 @@ package com.spaceagency.rover;
 import com.spaceagency.common.Command;
 
 public class CommandExecutor {
-	Rover rover;
+	Antenna antenna;
+	SolarPanel solarPanel;
+	Battery battery;
 	
-	public CommandExecutor(Rover rover) {
-		this.rover = rover;
+	public CommandExecutor(Antenna antenna, SolarPanel solarPanel, Battery battery) {
+		this.antenna = antenna;
+		this.solarPanel = solarPanel;
+		this.battery = battery;
 	}
 	
-	public String runCommand(Command command) {
+	public String runCommand(String commandText) {
+		Command command = evaluateCommand(commandText);
 		System.out.println("recieved command " + command.getExecutorName() + " " + command.getCommandName());
 		return "";
+	}
+	
+	private Command evaluateCommand(String commandText) {
+		Command command;
+		
+		
+		return command;
 	}
 	
 	public boolean execute(String command) {

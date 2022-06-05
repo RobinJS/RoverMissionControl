@@ -40,7 +40,7 @@ public class CommandCenter {
 			case "connect": connect(); break;
 			case "disconnect": disconnect(); break;
 			case "help": printAllCommands(); break;
-			case "status": sendCommand(input); break;
+			case "rover status": sendCommand(input); break;
 			default:
 				System.out.println("Invalid command.");
 		}
@@ -57,7 +57,7 @@ public class CommandCenter {
 	}
 	
 	private void sendCommand(String command) {
-		String response = transmitter.sendCommand(new Command("rover", command));
+		String response = transmitter.sendCommand(command);
 		
 		System.out.println(response);
 	}

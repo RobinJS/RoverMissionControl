@@ -44,16 +44,17 @@ public class CommunicationModule {
 
         public void run() {
 			try {
-				out = new PrintWriter(clientSocket.getOutputStream(), true);
 				InputStream inputStream = clientSocket.getInputStream();
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				out = new PrintWriter(clientSocket.getOutputStream(), true);
 				
 				System.out.println("New connection.");
 				
-				String command;
-				while ((command = (String) in.readLine()) != null) {
-					String response = commandExecutor.runCommand(command);
-					out.println("recieved command " + response);
+				String input;
+				while ((input = in.readLine()) != null) {
+					System.out.println("Before execute " + input);
+					String response = commandExecutor.runCommand(input);
+					out.println("response " + response);
 				}
 				
 				in.close();
@@ -63,9 +64,6 @@ public class CommunicationModule {
 			} catch (IOException e) {
 				System.out.println("Lost connection with Command Center.");
 //				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				System.out.println("Unidentified command.");
-				e.printStackTrace();
 			}
 		}
     }

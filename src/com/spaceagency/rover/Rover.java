@@ -8,8 +8,6 @@ import com.spaceagency.rover.utils.Position;
 
 public class Rover {
 	private final String id;
-	private Position position;
-	private Direction direction;
 	
 	private Battery battery;
 	private SolarPanel solarPanel;
@@ -17,6 +15,7 @@ public class Rover {
 	private WeatherStation weatherStation;
 	private Antenna antenna;
 	private static CommunicationModule communicationModule;
+	private MovementModule movementModule;
 	
 	public String getId() {
 		return id;
@@ -25,25 +24,27 @@ public class Rover {
 	public static void main(String[] args) {
 		int port = 1234;
 		Rover rover = new Rover("Curiosity", new Position(0, 0), Direction.EAST, port);
-		communicationModule = new CommunicationModule(new CommandExecutor(rover));
-		communicationModule.start(port);
 	}
 	
 	private Rover(String id, Position initialPosition, Direction direction, int port) {
 		this.id = id;
-		this.position = initialPosition;
-		this.direction = direction;
 		
 		battery = new Battery();
 		antenna = new Antenna(3, battery);
 		solarPanel = new SolarPanel(10, battery);
 		camera = new Camera(1, battery);
 		weatherStation = new WeatherStation(1, battery);
+		movementModule = new MovementModule(2, battery);
+		movementModule.setPosition(initialPosition);
+		movementModule.setDirection(direction);
 		
 		battery.setCharger(solarPanel);
 		
 		activate();
 		
+		CommandExecutor commandExecutor = new CommandExecutor(battery, antenna, solarPanel, camera, weatherStation);
+		communicationModule = new CommunicationModule(commandExecutor);
+		communicationModule.start(port);
 	}
 	
 	private void activate() {
@@ -51,47 +52,6 @@ public class Rover {
 		antenna.unfold();
 	}
 	
-//	@MenuItem
-	public void moveForward() {
-		// todo: check for obstacle
-		switch (direction) {
-			case EAST -> position.x += 1;
-			case WEST -> position.x -= 1;
-			case NORTH -> position.y -= 1;
-			case SOUTH -> position.y += 1;
-		}
-	}
-	
-//	@MenuItem
-	public void moveBackward() {
-		// todo: check for obstacle
-		switch (direction) {
-			case EAST -> position.x -= 1;
-			case WEST -> position.x += 1;
-			case NORTH -> position.y += 1;
-			case SOUTH -> position.y -= 1;
-		}
-	}
-	
-//	@MenuItem
-	public void turnLeft() {
-		switch (direction) {
-			case EAST -> direction = Direction.NORTH;
-			case WEST -> direction = Direction.SOUTH;
-			case NORTH -> direction = Direction.WEST;
-			case SOUTH -> direction = Direction.EAST;
-		}
-	}
-	
-//	@MenuItem
-	public void turnRight() {
-		switch (direction) {
-			case EAST -> direction = Direction.SOUTH;
-			case WEST -> direction = Direction.NORTH;
-			case NORTH -> direction = Direction.EAST;
-			case SOUTH -> direction = Direction.WEST;
-		}
-	}
 	
 //	@MenuItem
 	public String getStatus() {

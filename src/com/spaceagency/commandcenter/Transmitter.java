@@ -9,7 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 public class Transmitter {
 	private Socket clientSocket;
-    private ObjectOutputStream out;
+//    private ObjectOutputStream out;
+    private PrintWriter out;
     private BufferedReader in;
 
     public void connectWith(Device device) {
@@ -19,7 +20,8 @@ public class Transmitter {
 		try {
 			clientSocket = new Socket(url, port);
 			OutputStream outputStream = clientSocket.getOutputStream();
-			out = new ObjectOutputStream(outputStream);
+//			out = new ObjectOutputStream(outputStream);
+			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			System.out.printf("Connected to %s:%s%n", url, port);
 		} catch (IOException e) {
@@ -29,10 +31,12 @@ public class Transmitter {
 		}
     }
 	
-	public String sendCommand(Command command) {
+	public String sendCommand(String command) {
 		String resp = null;
 		try {
-			out.writeObject(command);
+//			out.writeObject(command);
+			System.out.println("Before send " + command);
+			out.println(command);
 			resp = in.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,48 +1,55 @@
 package com.spaceagency.rover;
 
 import com.spaceagency.common.Command;
+import com.spaceagency.rover.instruments.*;
 
 public class CommandExecutor {
-	Antenna antenna;
-	SolarPanel solarPanel;
-	Battery battery;
+	private Battery battery;
+	private Antenna antenna;
+	private SolarPanel solarPanel;
+	private Camera camera;
+	private WeatherStation weatherStation;
 	
-	public CommandExecutor(Antenna antenna, SolarPanel solarPanel, Battery battery) {
+	public CommandExecutor(Battery battery, Antenna antenna, SolarPanel solarPanel, Camera camera, WeatherStation weatherStation) {
+		this.battery = battery;
 		this.antenna = antenna;
 		this.solarPanel = solarPanel;
-		this.battery = battery;
+		this.camera = camera;
+		this.weatherStation = weatherStation;
 	}
 	
 	public String runCommand(String commandText) {
 		Command command = evaluateCommand(commandText);
-		System.out.println("recieved command " + command.getExecutorName() + " " + command.getCommandName());
-		return "";
+		if (command != null) return command.execute();
+		else return "error";
 	}
 	
 	private Command evaluateCommand(String commandText) {
-		Command command;
+		Command command = null;
 		
+		System.out.println("Check command " + commandText);
+		
+		switch(commandText) {
+			case "rover status": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
+			default: break;
+		}
 		
 		return command;
 	}
 	
-	public boolean execute(String command) {
-		switch(command) {
-			case "rover status": new RoverStatus(rover).execute(); break;
-			default: break;
-		}
+	public class RoverStatusCommand implements Command {
+		Battery battery;
+		SolarPanel solarPanel;
+		WeatherStation weatherStation;
 		
-		return false;
-	}
-	
-	public class RoverStatus {
-		Rover rover;
-		public RoverStatus(Rover rover) {
-			this.rover = rover;
+		public RoverStatusCommand(Battery battery, SolarPanel solarPanel, WeatherStation weatherStation) {
+			this.battery = battery;
+			this.solarPanel = solarPanel;
+			this.weatherStation = weatherStation;
 		}
 		
 		public String execute() { // to do response data
-			return rover.getStatus();
+			return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
 		}
 	}
 }

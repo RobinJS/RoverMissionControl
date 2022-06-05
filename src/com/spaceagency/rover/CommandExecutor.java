@@ -27,8 +27,6 @@ public class CommandExecutor {
 	private Command evaluateCommand(String commandText) {
 		Command command = null;
 		
-		System.out.println("Check command " + commandText);
-		
 		switch(commandText) {
 			case "rover status": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
 			default: break;

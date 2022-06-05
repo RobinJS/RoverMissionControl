@@ -49,10 +49,10 @@ public class CommunicationModule {
 				out = new PrintWriter(clientSocket.getOutputStream(), true);
 				
 				System.out.println("New connection.");
+				out.println(getAvailableCommands()); // TODO: send available commands
 				
 				String input;
 				while ((input = in.readLine()) != null) {
-					System.out.println("Before execute " + input);
 					String response = commandExecutor.runCommand(input);
 					out.println("response " + response);
 				}
@@ -66,5 +66,9 @@ public class CommunicationModule {
 //				e.printStackTrace();
 			}
 		}
-    }
+		
+		private String getAvailableCommands() {
+			return "more commands";
+		}
+	}
 }

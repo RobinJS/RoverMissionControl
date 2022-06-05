@@ -23,7 +23,9 @@ public class Transmitter {
 //			out = new ObjectOutputStream(outputStream);
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			System.out.printf("Connected to %s:%s%n", url, port);
+			System.out.printf("Connected to %s:%s%n. More commands available.", url, port);
+			
+			System.out.println(in.readLine()); // TODO: get commands and save them
 		} catch (IOException e) {
 			System.out.printf("Could not connected to %s:%s%n", url, port);
 			// todo: more info
@@ -35,7 +37,6 @@ public class Transmitter {
 		String resp = null;
 		try {
 //			out.writeObject(command);
-			System.out.println("Before send " + command);
 			out.println(command);
 			resp = in.readLine();
 		} catch (IOException e) {
@@ -63,10 +64,10 @@ public class Transmitter {
 			in.close();
 			out.close();
 			clientSocket.close();
-			System.out.printf("Disconnected with %s:%s%n", url, port);
+			System.out.printf("Disconnected from %s:%s%n", url, port);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.printf("Could not disconnected with %s:%s%n", url, port);
+			System.out.printf("Could not disconnect from %s:%s%n", url, port);
 		}
     }
 	

@@ -1,4 +1,4 @@
-package com.spaceagency.commandcenter.menu;
+package com.spaceagency.rover.interfaces;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,4 +7,4 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MenuItem{}
+public @interface RemoteCommand {}

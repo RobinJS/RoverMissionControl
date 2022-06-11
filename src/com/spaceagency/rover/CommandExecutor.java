@@ -2,15 +2,23 @@ package com.spaceagency.rover;
 
 import com.spaceagency.common.Command;
 import com.spaceagency.rover.instruments.*;
+import com.spaceagency.rover.interfaces.RemoteCommand;
+import org.hamcrest.core.AnyOf;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class CommandExecutor {
+	private Rover rover;
 	private Battery battery;
 	private Antenna antenna;
 	private SolarPanel solarPanel;
 	private Camera camera;
 	private WeatherStation weatherStation;
 	
-	public CommandExecutor(Battery battery, Antenna antenna, SolarPanel solarPanel, Camera camera, WeatherStation weatherStation) {
+	public CommandExecutor(Rover rover, Battery battery, Antenna antenna, SolarPanel solarPanel, Camera camera, WeatherStation weatherStation) {
+		this.rover = rover;
 		this.battery = battery;
 		this.antenna = antenna;
 		this.solarPanel = solarPanel;
@@ -33,6 +41,28 @@ public class CommandExecutor {
 		}
 		
 		return command;
+	}
+	
+	public ArrayList<String> getRemoteCommands() {
+		ArrayList<String> list = new ArrayList<>();
+		
+//		Stream.concat(getCommandsFor(rover));
+		list.addAll(getCommandsFor(rover));
+		
+		return list;
+	}
+	
+	private static <T> ArrayList<String> getCommandsFor(T obj) {
+		ArrayList<String> list = new ArrayList<>();
+		for (Method m : obj.getClass().getMethods()) {
+			RemoteCommand mXY = m.getAnnotation(RemoteCommand.class);
+			if (mXY != null) {
+//				System.out.println("method: " + m.getName());
+				list.add(m.getName());
+			}
+		}
+		
+		return list;
 	}
 	
 	public class RoverStatusCommand implements Command {

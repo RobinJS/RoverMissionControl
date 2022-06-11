@@ -11,7 +11,8 @@ public class Transmitter {
 	private Socket clientSocket;
 //    private ObjectOutputStream out;
     private PrintWriter out;
-    private BufferedReader in;
+//    private BufferedReader in;
+	private ObjectInputStream in;
 
     public void connectWith(Device device) {
 		String url = device.getUrl();
@@ -22,11 +23,12 @@ public class Transmitter {
 			OutputStream outputStream = clientSocket.getOutputStream();
 //			out = new ObjectOutputStream(outputStream);
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			System.out.printf("Connected to %s:%s%n. More commands available.", url, port);
+//			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			in = new ObjectInputStream(clientSocket.getInputStream());
+			System.out.printf("Connected to %s:%s.%nMore commands available.", url, port);
 			
-			System.out.println(in.readLine()); // TODO: get commands and save them
-		} catch (IOException e) {
+			System.out.println(in.readObject().toString()); // TODO: get commands and save them
+		} catch (IOException | ClassNotFoundException e) {
 			System.out.printf("Could not connected to %s:%s%n", url, port);
 			// todo: more info
 			e.printStackTrace();
@@ -61,10 +63,15 @@ public class Transmitter {
 		int port = device.getPort();
 		
 		try {
-			in.close();
-			out.close();
-			clientSocket.close();
-			System.out.printf("Disconnected from %s:%s%n", url, port);
+			if (in != null) {
+				in.close();
+				out.close();
+				clientSocket.close();
+				System.out.printf("Disconnected from %s:%s%n", url, port);
+			}
+			else {
+				System.out.printf("Already disconnected from %s:%s%n", url, port);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.printf("Could not disconnect from %s:%s%n", url, port);

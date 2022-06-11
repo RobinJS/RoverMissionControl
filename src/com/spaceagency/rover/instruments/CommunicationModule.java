@@ -33,7 +33,8 @@ public class CommunicationModule {
 	
 	private static class ClientHandler extends Thread {
         private Socket clientSocket;
-        private PrintWriter out;
+//        private PrintWriter out;
+		private ObjectOutputStream out;
         private BufferedReader in;
 //		private CommandExecutor commandExecutor;
 
@@ -46,15 +47,17 @@ public class CommunicationModule {
 			try {
 				InputStream inputStream = clientSocket.getInputStream();
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				out = new PrintWriter(clientSocket.getOutputStream(), true);
+//				out = new PrintWriter(clientSocket.getOutputStream(), true);
+				out = new ObjectOutputStream(clientSocket.getOutputStream());
 				
 				System.out.println("New connection.");
-				out.println(getAvailableCommands()); // TODO: send available commands
+//				out.println(commandExecutor.getRemoteCommands());
+				out.writeObject(commandExecutor.getRemoteCommands());
 				
 				String input;
 				while ((input = in.readLine()) != null) {
 					String response = commandExecutor.runCommand(input);
-					out.println("response " + response);
+//					out.println("response " + response);
 				}
 				
 				in.close();
@@ -65,10 +68,6 @@ public class CommunicationModule {
 				System.out.println("Lost connection with Command Center.");
 //				e.printStackTrace();
 			}
-		}
-		
-		private String getAvailableCommands() {
-			return "more commands";
 		}
 	}
 }

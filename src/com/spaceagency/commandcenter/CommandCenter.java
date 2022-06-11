@@ -1,13 +1,7 @@
 package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.menu.ConsoleMenu;
-import com.spaceagency.commandcenter.menu.MenuItem;
-import com.spaceagency.common.Command;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.spaceagency.rover.interfaces.RemoteCommand;
 
 public class CommandCenter {
 	private Transmitter transmitter;
@@ -46,12 +40,12 @@ public class CommandCenter {
 		}
 	}
 	
-	@MenuItem
+	@RemoteCommand
 	public void connect() {
 		transmitter.connectWith(device);
 	}
 	
-	@MenuItem
+	@RemoteCommand
 	public void disconnect() {
 		transmitter.disconnectWith(device);
 	}

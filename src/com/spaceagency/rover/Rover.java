@@ -1,8 +1,9 @@
 package com.spaceagency.rover;
 
-//import com.spaceagency.commandcenter.menu.MenuItem;
+//import com.spaceagency.rover.interfaces.MenuItem;
 import com.spaceagency.common.Command;
 import com.spaceagency.rover.instruments.*;
+import com.spaceagency.rover.interfaces.RemoteCommand;
 import com.spaceagency.rover.utils.Direction;
 import com.spaceagency.rover.utils.Position;
 
@@ -42,7 +43,7 @@ public class Rover {
 		
 		activate();
 		
-		CommandExecutor commandExecutor = new CommandExecutor(battery, antenna, solarPanel, camera, weatherStation);
+		CommandExecutor commandExecutor = new CommandExecutor(this, battery, antenna, solarPanel, camera, weatherStation);
 		communicationModule = new CommunicationModule(commandExecutor);
 		communicationModule.start(port);
 	}
@@ -53,7 +54,7 @@ public class Rover {
 	}
 	
 	
-//	@MenuItem
+	@RemoteCommand
 	public String getStatus() {
 		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
 	}

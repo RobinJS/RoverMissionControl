@@ -1,5 +1,6 @@
 package com.spaceagency.rover.instruments;
 
+import com.spaceagency.rover.interfaces.RemoteCommand;
 import com.spaceagency.rover.utils.Direction;
 import com.spaceagency.rover.utils.Position;
 
@@ -18,7 +19,7 @@ public class MovementModule extends ElectricalInstrument {
 	}
 	
 	
-//	@MenuItem
+	@RemoteCommand
 	public void moveForward() {
 		// todo: check for obstacle
 		switch (direction) {
@@ -29,7 +30,7 @@ public class MovementModule extends ElectricalInstrument {
 		}
 	}
 	
-//	@MenuItem
+	@RemoteCommand
 	public void moveBackward() {
 		// todo: check for obstacle
 		switch (direction) {
@@ -40,7 +41,7 @@ public class MovementModule extends ElectricalInstrument {
 		}
 	}
 	
-//	@MenuItem
+	@RemoteCommand
 	public void turnLeft() {
 		switch (direction) {
 			case EAST -> direction = Direction.NORTH;
@@ -50,7 +51,7 @@ public class MovementModule extends ElectricalInstrument {
 		}
 	}
 	
-//	@MenuItem
+	@RemoteCommand
 	public void turnRight() {
 		switch (direction) {
 			case EAST -> direction = Direction.SOUTH;

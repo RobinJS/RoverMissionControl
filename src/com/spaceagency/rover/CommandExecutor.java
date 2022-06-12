@@ -6,7 +6,7 @@ import com.spaceagency.rover.interfaces.RemoteCommand;
 import org.hamcrest.core.AnyOf;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class CommandExecutor {
@@ -15,14 +15,16 @@ public class CommandExecutor {
 	private Antenna antenna;
 	private SolarPanel solarPanel;
 	private Camera camera;
+	private MovementModule movementModule;
 	private WeatherStation weatherStation;
 	
-	public CommandExecutor(Rover rover, Battery battery, Antenna antenna, SolarPanel solarPanel, Camera camera, WeatherStation weatherStation) {
+	public CommandExecutor(Rover rover, Battery battery, Antenna antenna, SolarPanel solarPanel, Camera camera, MovementModule movementModule, WeatherStation weatherStation) {
 		this.rover = rover;
 		this.battery = battery;
 		this.antenna = antenna;
 		this.solarPanel = solarPanel;
 		this.camera = camera;
+		this.movementModule = movementModule;
 		this.weatherStation = weatherStation;
 	}
 	
@@ -36,33 +38,50 @@ public class CommandExecutor {
 		Command command = null;
 		
 		switch(commandText) {
-			case "rover status": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
+			case "Rover getStatus": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
 			default: break;
 		}
 		
 		return command;
 	}
 	
-	public ArrayList<String> getRemoteCommands() {
-		ArrayList<String> list = new ArrayList<>();
+	public Map<String, ArrayList<String>> getRemoteCommands() {
+		Map<String, ArrayList<String>> commandsMap = new HashMap<>();
 		
-//		Stream.concat(getCommandsFor(rover));
-		list.addAll(getCommandsFor(rover));
+		// TODO: or use objects
+		Map.Entry<String,ArrayList<String>> roverCommands = getCommandsFor(rover).entrySet().iterator().next();
+		commandsMap.put(roverCommands.getKey(), roverCommands.getValue());
 		
-		return list;
+		Map.Entry<String,ArrayList<String>> batteryCommands = getCommandsFor(battery).entrySet().iterator().next();
+		commandsMap.put(batteryCommands.getKey(), batteryCommands.getValue());
+		
+		Map.Entry<String,ArrayList<String>> cameraCommands = getCommandsFor(camera).entrySet().iterator().next();
+		commandsMap.put(cameraCommands.getKey(), cameraCommands.getValue());
+		
+		Map.Entry<String,ArrayList<String>> movementCommands = getCommandsFor(movementModule).entrySet().iterator().next();
+		commandsMap.put(movementCommands.getKey(), movementCommands.getValue());
+		
+		Map.Entry<String,ArrayList<String>> weatherStationCommands = getCommandsFor(weatherStation).entrySet().iterator().next();
+		commandsMap.put(weatherStationCommands.getKey(), weatherStationCommands.getValue());
+		
+		
+		return commandsMap;
 	}
 	
-	private static <T> ArrayList<String> getCommandsFor(T obj) {
+	private static <T> Map<String, ArrayList<String>> getCommandsFor(T obj) {
+		Map<String, ArrayList<String>> commandsMap = new HashMap<>();
 		ArrayList<String> list = new ArrayList<>();
+		
 		for (Method m : obj.getClass().getMethods()) {
 			RemoteCommand mXY = m.getAnnotation(RemoteCommand.class);
 			if (mXY != null) {
-//				System.out.println("method: " + m.getName());
 				list.add(m.getName());
 			}
 		}
 		
-		return list;
+		commandsMap.put(obj.getClass().getSimpleName(), list);
+		
+		return commandsMap;
 	}
 	
 	public class RoverStatusCommand implements Command {
@@ -76,7 +95,7 @@ public class CommandExecutor {
 			this.weatherStation = weatherStation;
 		}
 		
-		public String execute() { // to do response data
+		public String execute() { // TODO: response data
 			return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
 		}
 	}

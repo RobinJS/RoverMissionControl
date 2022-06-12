@@ -5,6 +5,8 @@ import com.spaceagency.rover.CommandExecutor;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class CommunicationModule {
 	private ServerSocket serverSocket;
@@ -33,7 +35,7 @@ public class CommunicationModule {
 	
 	private static class ClientHandler extends Thread {
         private Socket clientSocket;
-//        private PrintWriter out;
+        private PrintWriter commandResponse;
 		private ObjectOutputStream out;
         private BufferedReader in;
 //		private CommandExecutor commandExecutor;
@@ -47,21 +49,24 @@ public class CommunicationModule {
 			try {
 				InputStream inputStream = clientSocket.getInputStream();
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//				out = new PrintWriter(clientSocket.getOutputStream(), true);
+				commandResponse = new PrintWriter(clientSocket.getOutputStream(), true);
 				out = new ObjectOutputStream(clientSocket.getOutputStream());
 				
 				System.out.println("New connection.");
 //				out.println(commandExecutor.getRemoteCommands());
-				out.writeObject(commandExecutor.getRemoteCommands());
+				Map<String, ArrayList<String>> commands = commandExecutor.getRemoteCommands();
+				out.writeObject(commands);
 				
 				String input;
 				while ((input = in.readLine()) != null) {
 					String response = commandExecutor.runCommand(input);
-//					out.println("response " + response);
+					commandResponse.println("response " + response);
+					// TODO maybe send JSON String and parse it
 				}
 				
 				in.close();
 				out.close();
+				commandResponse.close();
 				clientSocket.close();
 				System.out.println("client socket closed");
 			} catch (IOException e) {

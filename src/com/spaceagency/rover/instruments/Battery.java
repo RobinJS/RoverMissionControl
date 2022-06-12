@@ -1,6 +1,7 @@
 package com.spaceagency.rover.instruments;
 
 import com.spaceagency.rover.interfaces.Charger;
+import com.spaceagency.rover.interfaces.RemoteCommand;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,8 +29,6 @@ public class Battery {
 			percentage++;
 		
 		if (percentage == MAX_CHARGE) stopCharging();
-		
-//		System.out.println(getStatus());
 	}
 	
 	private void stopCharging() {
@@ -54,6 +53,7 @@ public class Battery {
 		return requiredPower <= percentage;
 	}
 	
+	@RemoteCommand
 	public String getStatus() {
 		return String.format("Battery: %s%%", percentage);
 	}

@@ -43,7 +43,7 @@ public class Rover {
 		
 		activate();
 		
-		CommandExecutor commandExecutor = new CommandExecutor(this, battery, antenna, solarPanel, camera, weatherStation);
+		CommandExecutor commandExecutor = new CommandExecutor(this, battery, antenna, solarPanel, camera, movementModule, weatherStation);
 		communicationModule = new CommunicationModule(commandExecutor);
 		communicationModule.start(port);
 	}

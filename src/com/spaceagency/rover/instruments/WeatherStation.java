@@ -1,5 +1,7 @@
 package com.spaceagency.rover.instruments;
 
+import com.spaceagency.rover.interfaces.RemoteCommand;
+
 import java.util.Locale;
 import java.util.Random;
 
@@ -9,6 +11,7 @@ public class WeatherStation extends ElectricalInstrument {
 		super(consumedPower, battery);
 	}
 	
+	@RemoteCommand
 	public String getStatus() {
 		String status = "uknown";
 		

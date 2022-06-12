@@ -1,15 +1,15 @@
 package com.spaceagency.commandcenter.menu;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConsoleMenu {
 	private static ConsoleMenu instance;
 	private	Scanner in;
 	
-	List<String> commands = new ArrayList<String>(Arrays.asList("help", "connect", "disconnect"));
+//	ArrayList<String> commands = new ArrayList<String>(Arrays.asList("help", "connect", "disconnect"));
+	private Map<String, ArrayList<String>> commands = new HashMap<>();
 	
 	private ConsoleMenu() { }
 	
@@ -22,29 +22,30 @@ public class ConsoleMenu {
 	}
 	
 	private void init() {
+		commands.put("", new ArrayList<>(Arrays.asList("help", "connect", "disconnect")));
 		in = new Scanner(System.in);
-		System.out.println("Enter 'help' to see available commands.");
+		System.out.println("Enter 'help' to see available commands. Submenu example: Rover getStatus");
 	}
 	
-	public String getNextCommand() {
+	public String awaitUserCommand() {
 		return validateCommand(in.nextLine());
 	}
 	
 	private String validateCommand(String command) {
 		// TODO: validate!
+//		System.out.println("Invalid command.");
 		return command;
 	}
 	
+	public void addCommands(Map<String, ArrayList<String>> commandsMap) {
+		commands = Stream.of(commands, commandsMap)
+				.flatMap(map -> map.entrySet().stream())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		
+//		System.out.println(commands.toString());
+	}
+	
 	public void printAllCommands() {
-		
-		/*CommandCenter at = commandCenter;
-        for (Method m : at.getClass().getMethods()) {
-           MenuItem mXY = (MenuItem)m.getAnnotation(MenuItem.class);
-           if (mXY != null) {
-			   System.out.println("method: " + m.getName());
-           }
-        }*/
-		
-		commands.forEach(c -> System.out.println(c));
+		commands.forEach((k, v) -> System.out.println(k + " " + v));
 	}
 }

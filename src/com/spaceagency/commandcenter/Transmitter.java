@@ -4,6 +4,8 @@ import com.spaceagency.common.Command;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,28 +13,33 @@ public class Transmitter {
 	private Socket clientSocket;
 //    private ObjectOutputStream out;
     private PrintWriter out;
-//    private BufferedReader in;
+    private BufferedReader commandResponse;
 	private ObjectInputStream in;
 
-    public void connectWith(Device device) {
+    public Map<String, ArrayList<String>> connectWith(Device device) {
 		String url = device.getUrl();
 		int port = device.getPort();
+		Map<String, ArrayList<String>> remoteCommands = null;
 		
 		try {
 			clientSocket = new Socket(url, port);
 			OutputStream outputStream = clientSocket.getOutputStream();
 //			out = new ObjectOutputStream(outputStream);
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
-//			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			commandResponse = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			in = new ObjectInputStream(clientSocket.getInputStream());
-			System.out.printf("Connected to %s:%s.%nMore commands available.", url, port);
+			System.out.printf("Connected to %s:%s.%nMore commands available.%n", url, port);
 			
-			System.out.println(in.readObject().toString()); // TODO: get commands and save them
+			remoteCommands = (Map<String, ArrayList<String>>) in.readObject();
+			
+//			System.out.println(remoteCommands.toString()); // TODO: get commands and save them. remove commands on disconnect
 		} catch (IOException | ClassNotFoundException e) {
 			System.out.printf("Could not connected to %s:%s%n", url, port);
 			// todo: more info
 			e.printStackTrace();
 		}
+		
+		return remoteCommands;
     }
 	
 	public String sendCommand(String command) {
@@ -40,7 +47,7 @@ public class Transmitter {
 		try {
 //			out.writeObject(command);
 			out.println(command);
-			resp = in.readLine();
+			resp = commandResponse.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

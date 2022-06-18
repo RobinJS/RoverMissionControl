@@ -56,7 +56,7 @@ public class CommunicationModule {
 				String input;
 				while ((input = in.readLine()) != null) {
 					String response = commandExecutor.runCommand(input);
-					commandResponse.println("response " + response);
+					commandResponse.println(response);
 					// TODO maybe send JSON String and parse it
 				}
 				

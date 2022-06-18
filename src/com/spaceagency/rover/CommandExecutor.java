@@ -14,6 +14,7 @@ public class CommandExecutor {
 	private Camera camera;
 	private MovementModule movementModule;
 	private WeatherStation weatherStation;
+	private Map<String, ArrayList<String>> availableCommands = new HashMap<>();
 	
 	public CommandExecutor(Rover rover, Battery battery, Antenna antenna, SolarPanel solarPanel, Camera camera, MovementModule movementModule, WeatherStation weatherStation) {
 		this.rover = rover;
@@ -25,10 +26,10 @@ public class CommandExecutor {
 		this.weatherStation = weatherStation;
 	}
 	
-	public String runCommand(String commandText) {
-		Command command = evaluateCommand(commandText);
+	public String runCommand(String requestedCommand) {
+		Command command = evaluateCommand(requestedCommand);
 		if (command != null) return command.execute();
-		else return "Invalid command: " + commandText;
+		else return "Invalid command: " + requestedCommand;
 	}
 	
 	private Command evaluateCommand(String commandText) {

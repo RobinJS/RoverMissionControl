@@ -10,10 +10,10 @@ public class Battery {
 	private int percentage = 100;
 	private static final int MAX_CHARGE = 100;
 	private Charger charger; // to do: or directly SolarPanel?
-	private Timer timer = new Timer();
 	
 	public Battery() {
 		int timeOffsetSec = 5;
+		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {

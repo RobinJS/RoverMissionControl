@@ -1,13 +1,10 @@
 package com.spaceagency.rover;
 
-import com.spaceagency.common.Command;
 import com.spaceagency.rover.instruments.*;
 import com.spaceagency.rover.interfaces.RemoteCommand;
-import org.hamcrest.core.AnyOf;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class CommandExecutor {
 	private Rover rover;

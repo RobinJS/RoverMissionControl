@@ -1,7 +1,5 @@
 package com.spaceagency.rover;
 
-//import com.spaceagency.rover.interfaces.MenuItem;
-import com.spaceagency.common.Command;
 import com.spaceagency.rover.instruments.*;
 import com.spaceagency.rover.interfaces.RemoteCommand;
 import com.spaceagency.rover.utils.Direction;

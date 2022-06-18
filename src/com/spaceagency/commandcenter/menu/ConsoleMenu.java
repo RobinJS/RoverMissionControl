@@ -8,7 +8,6 @@ public class ConsoleMenu {
 	private static ConsoleMenu instance;
 	private	Scanner in;
 	
-//	ArrayList<String> commands = new ArrayList<String>(Arrays.asList("help", "connect", "disconnect"));
 	private Map<String, ArrayList<String>> commands = new HashMap<>();
 	
 	private ConsoleMenu() { }
@@ -32,17 +31,28 @@ public class ConsoleMenu {
 	}
 	
 	private String validateCommand(String command) {
-		// TODO: validate!
-//		System.out.println("Invalid command.");
-		return command;
+		command.trim();
+		
+		String validated = "Invalid command";
+		String[] commandParts = command.split(" ");
+		
+		if (commandParts.length > 0 && commandParts.length < 3) {
+			if (commandParts.length == 1) commandParts = new String[] {"", command};
+			
+			ArrayList<String> possibleSubcommands = commands.get(commandParts[0]);
+			
+			if (possibleSubcommands.size() > 0 && possibleSubcommands.contains(commandParts[1])) {
+				validated = command;
+			}
+		}
+		
+		return validated;
 	}
 	
-	public void addCommands(Map<String, ArrayList<String>> commandsMap) {
+	public void addCommands(String deviceID, Map<String, ArrayList<String>> commandsMap) {
 		commands = Stream.of(commands, commandsMap)
 				.flatMap(map -> map.entrySet().stream())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		
-//		System.out.println(commands.toString());
 	}
 	
 	public void printAllCommands() {

@@ -34,11 +34,8 @@ public class CommunicationModule {
     }
 	
 	private static class ClientHandler extends Thread {
-        private Socket clientSocket;
-        private PrintWriter commandResponse;
-		private ObjectOutputStream out;
-        private BufferedReader in;
-//		private CommandExecutor commandExecutor;
+        private final Socket clientSocket;
+		//		private CommandExecutor commandExecutor;
 
         public ClientHandler(Socket socket) {
             this.clientSocket = socket;
@@ -48,11 +45,11 @@ public class CommunicationModule {
         public void run() {
 			try {
 				InputStream inputStream = clientSocket.getInputStream();
-				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				commandResponse = new PrintWriter(clientSocket.getOutputStream(), true);
-				out = new ObjectOutputStream(clientSocket.getOutputStream());
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				PrintWriter commandResponse = new PrintWriter(clientSocket.getOutputStream(), true);
+				ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 				
-				System.out.println("New connection.");
+				System.out.println("New connection registered.");
 //				out.println(commandExecutor.getRemoteCommands());
 				Map<String, ArrayList<String>> commands = commandExecutor.getRemoteCommands();
 				out.writeObject(commands);

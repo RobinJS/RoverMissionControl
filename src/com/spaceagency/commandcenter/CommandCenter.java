@@ -38,7 +38,7 @@ public class CommandCenter {
 			case "connect": connect(); break;
 			case "disconnect": disconnect(); break;
 			case "help": menu.printAllCommands(); break;
-//			case "rover status": sendCommand(input); break;
+			case "Invalid command": onInvalidCommand(); break;
 //			case "exit": break; TODO
 			default:
 //				System.out.println("Invalid command.");
@@ -46,12 +46,16 @@ public class CommandCenter {
 		}
 	}
 	
+	private void onInvalidCommand() {
+		System.out.println("Invalid command. Please check if you spell it correctly. Mind the casing!");
+	}
+	
 	@RemoteCommand
 	public void connect() {
 		Map<String, ArrayList<String>> remoteCommands = transmitter.connectWith(device);
 		// TODO test connection lost with the rover
 		if (remoteCommands != null && remoteCommands.size() > 0) {
-			menu.addCommands(remoteCommands);
+			menu.addCommands(device.getID(), remoteCommands);
 		}
 	}
 	

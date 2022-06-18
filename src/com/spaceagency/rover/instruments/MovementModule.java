@@ -19,7 +19,7 @@ public class MovementModule extends ElectricalInstrument {
 	}
 	
 	
-	@RemoteCommand
+//	@RemoteCommand
 	public void moveForward() {
 		// todo: check for obstacle
 		switch (direction) {
@@ -30,7 +30,7 @@ public class MovementModule extends ElectricalInstrument {
 		}
 	}
 	
-	@RemoteCommand
+//	@RemoteCommand
 	public void moveBackward() {
 		// todo: check for obstacle
 		switch (direction) {
@@ -41,7 +41,7 @@ public class MovementModule extends ElectricalInstrument {
 		}
 	}
 	
-	@RemoteCommand
+//	@RemoteCommand
 	public void turnLeft() {
 		switch (direction) {
 			case EAST -> direction = Direction.NORTH;
@@ -51,7 +51,7 @@ public class MovementModule extends ElectricalInstrument {
 		}
 	}
 	
-	@RemoteCommand
+//	@RemoteCommand
 	public void turnRight() {
 		switch (direction) {
 			case EAST -> direction = Direction.SOUTH;

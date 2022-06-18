@@ -31,7 +31,7 @@ public class CommandExecutor {
 	public String runCommand(String commandText) {
 		Command command = evaluateCommand(commandText);
 		if (command != null) return command.execute();
-		else return "error";
+		else return "Invalid command: " + commandText;
 	}
 	
 	private Command evaluateCommand(String commandText) {
@@ -46,6 +46,7 @@ public class CommandExecutor {
 	}
 	
 	public Map<String, ArrayList<String>> getRemoteCommands() {
+		// TODO evaluate on init
 		Map<String, ArrayList<String>> commandsMap = new HashMap<>();
 		
 		// TODO: or use objects

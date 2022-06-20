@@ -5,6 +5,8 @@ import com.spaceagency.rover.interfaces.RemoteCommand;
 import com.spaceagency.rover.utils.Direction;
 import com.spaceagency.rover.utils.Position;
 
+import java.io.File;
+
 public class Rover {
 	private final String id;
 	
@@ -27,7 +29,8 @@ public class Rover {
 	
 	private Rover(String id, Position initialPosition, Direction direction, int port) {
 		this.id = id;
-		
+		// TODO: dave log files about connections and status
+		System.out.println(new File("/asd").exists());
 		battery = new Battery();
 		antenna = new Antenna(3, battery);
 		solarPanel = new SolarPanel(10, battery);

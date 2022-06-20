@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class CommunicationModule {
 	private ServerSocket serverSocket;
@@ -42,11 +43,14 @@ public class CommunicationModule {
         }
 
         public void run() {
+			BufferedReader in = null;
+			ObjectOutputStream out = null;
+			PrintWriter commandResponse = null;
+			
 			try {
-				InputStream inputStream = clientSocket.getInputStream();
-				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				PrintWriter commandResponse = new PrintWriter(clientSocket.getOutputStream(), true);
-				ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				out = new ObjectOutputStream(clientSocket.getOutputStream());
+				commandResponse = new PrintWriter(clientSocket.getOutputStream(), true);
 				
 				System.out.println("New connection registered.");
 //				out.println(commandExecutor.getRemoteCommands());
@@ -60,14 +64,33 @@ public class CommunicationModule {
 					// TODO maybe send JSON String and parse it
 				}
 				
-				in.close();
-				out.close();
-				commandResponse.close();
-				clientSocket.close();
-				System.out.println("client socket closed");
 			} catch (IOException e) {
 				System.out.println("Lost connection with Command Center.");
 //				e.printStackTrace();
+			}
+			finally {
+				try {
+					Objects.requireNonNull(in).close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				try {
+					Objects.requireNonNull(out).close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				Objects.requireNonNull(commandResponse).close();
+				
+				try {
+					clientSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				System.out.println("client socket closed");
+				
 			}
 		}
 	}

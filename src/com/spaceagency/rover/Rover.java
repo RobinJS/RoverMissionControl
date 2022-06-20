@@ -1,5 +1,6 @@
 package com.spaceagency.rover;
 
+import com.spaceagency.rover.commands.CommandExecutor;
 import com.spaceagency.rover.instruments.*;
 import com.spaceagency.rover.interfaces.RemoteCommand;
 import com.spaceagency.rover.utils.Direction;

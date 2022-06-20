@@ -1,6 +1,6 @@
 package com.spaceagency.rover.instruments;
 
-import com.spaceagency.rover.CommandExecutor;
+import com.spaceagency.rover.commands.CommandExecutor;
 
 import java.io.*;
 import java.net.*;

@@ -1,5 +1,7 @@
-package com.spaceagency.rover;
+package com.spaceagency.rover.commands;
 
+import com.spaceagency.rover.Rover;
+import com.spaceagency.rover.commands.Command;
 import com.spaceagency.rover.instruments.*;
 import com.spaceagency.rover.interfaces.RemoteCommand;
 
@@ -37,6 +39,8 @@ public class CommandExecutor {
 		
 		switch(commandText) {
 			case "Rover getStatus": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
+			case "WeatherStation getStatus": command = new WeatherStationStatusCommand(weatherStation); break;
+			case "Battery getStatus": command = new BatteryStatusCommand(battery); break;
 			default: break;
 		}
 		
@@ -83,20 +87,5 @@ public class CommandExecutor {
 		return commandsMap;
 	}
 	
-	public class RoverStatusCommand implements Command {
-		Battery battery;
-		SolarPanel solarPanel;
-		WeatherStation weatherStation;
-		
-		public RoverStatusCommand(Battery battery, SolarPanel solarPanel, WeatherStation weatherStation) {
-			this.battery = battery;
-			this.solarPanel = solarPanel;
-			this.weatherStation = weatherStation;
-		}
-		
-		public String execute() { // TODO: response data
-			return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
-		}
-	}
 }
 

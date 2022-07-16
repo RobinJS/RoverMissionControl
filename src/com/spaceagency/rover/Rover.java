@@ -58,7 +58,7 @@ public class Rover {
 	
 	@RemoteCommand
 	public String getStatus() {
-		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
+		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getInfo();
 	}
 	
 	

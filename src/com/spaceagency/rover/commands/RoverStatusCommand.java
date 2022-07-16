@@ -16,6 +16,6 @@ class RoverStatusCommand implements Command {
 	}
 	
 	public String execute() { // TODO: response data
-		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getStatus();
+		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getInfo();
 	}
 }

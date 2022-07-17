@@ -36,37 +36,29 @@ public class CommandExecutor {
 	
 	private Command evaluateCommand(String commandText) {
 		Command command = null;
-		// TODO: make it so it won't be needed to hardcode all these commands in the swithc
 		switch(commandText) {
-			case "Rover getStatus": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
-			case "WeatherStation getInfo": command = new WeatherStationStatusCommand(weatherStation); break;
-			case "Battery getStatus": command = new BatteryStatusCommand(battery); break;
-			case "Camera takePhoto": command = new CameraTakePhotoCommand(camera); break;
+			case "allStatus": command = new RoverStatusCommand(battery, solarPanel, weatherStation); break;
+			case "getWeather": command = new WeatherStationStatusCommand(weatherStation); break;
+			case "getBattery": command = new BatteryStatusCommand(battery); break;
+			case "takePhoto": command = new CameraTakePhotoCommand(camera); break;
+			case "moveForward": command = new MoveForwardCommand(movementModule); break;
+			case "moveBackward": command = new MoveBackwardCommand(movementModule); break;
+			case "turnLeft": command = new TurnLeftCommand(movementModule); break;
+			case "turnRight": command = new TurnRightCommand(movementModule); break;
 			default: break;
 		}
 		
 		return command;
 	}
 	
-	public Map<String, ArrayList<String>> getRemoteCommands() {
-		// TODO evaluate on init
-		Map<String, ArrayList<String>> commandsMap = new HashMap<>();
+	public ArrayList<String> getRemoteCommands() {
+		ArrayList<String> commandsMap = new ArrayList<>();
 		
-		// TODO: or use objects
-		ArrayList<String> roverCommands = getCommandsFor(rover);
-		if (roverCommands.size() > 0) commandsMap.put(rover.getClass().getSimpleName(), roverCommands);
-		
-		ArrayList<String> batteryCommands = getCommandsFor(battery);
-		if (batteryCommands.size() > 0) commandsMap.put(battery.getClass().getSimpleName(), batteryCommands);
-
-		ArrayList<String> cameraCommands = getCommandsFor(camera);
-		if (cameraCommands.size() > 0) commandsMap.put(camera.getClass().getSimpleName(), cameraCommands);
-
-		ArrayList<String> movementCommands = getCommandsFor(movementModule);
-		if (movementCommands.size() > 0) commandsMap.put(movementModule.getClass().getSimpleName(), movementCommands);
-
-		ArrayList<String> weatherStationCommands = getCommandsFor(weatherStation);
-		if (weatherStationCommands.size() > 0) commandsMap.put(weatherStation.getClass().getSimpleName(), weatherStationCommands);
+		commandsMap.addAll(getCommandsFor(rover));
+		commandsMap.addAll(getCommandsFor(battery));
+		commandsMap.addAll(getCommandsFor(camera));
+		commandsMap.addAll(getCommandsFor(movementModule));
+		commandsMap.addAll(getCommandsFor(weatherStation));
 		
 		return commandsMap;
 	}

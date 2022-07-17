@@ -9,6 +9,7 @@ import java.util.Map;
 public class CommandCenter {
 	private Transmitter transmitter;
 	private Device device;
+	private ArrayList<Device> connectedDevices = new ArrayList<>();
 	ConsoleMenu menu = ConsoleMenu.getInstance();
 	
 	// to do: database with devices to connect to. add/remove device
@@ -26,9 +27,11 @@ public class CommandCenter {
 		transmitter = new Transmitter();
 		device = new Device("Curiosity", "localhost", 1234);
 		
-//		connect(); // to remove
-		
-		while(true) { // TODO
+		awaitForCommands();
+	}
+	
+	private void awaitForCommands() {
+		while(true) {
 			onCommandEntered(menu.awaitUserCommand());
 		}
 	}
@@ -39,7 +42,6 @@ public class CommandCenter {
 			case "disconnect": disconnect(); break;
 			case "help": menu.printAllCommands(); break;
 			case "Invalid command": onInvalidCommand(); break;
-//			case "exit": break; TODO
 			default:
 //				System.out.println("Invalid command.");
 				sendCommand(input);
@@ -52,23 +54,27 @@ public class CommandCenter {
 	
 	@RemoteCommand
 	public void connect() {
-		Map<String, ArrayList<String>> remoteCommands = transmitter.connectWith(device);
-		// TODO test connection lost with the rover
+		ArrayList<String> remoteCommands = transmitter.connectWith(device);
+		// TODO test connection lost with the rover and remove commands on disconnect
 		if (remoteCommands != null && remoteCommands.size() > 0) {
+			connectedDevices.add(device);
 			menu.addCommands(device.getID(), remoteCommands);
 		}
 	}
 	
 	@RemoteCommand
 	public void disconnect() {
-		// TODO disconnect if already connected. Remove commands
-		transmitter.disconnectWith(device);
+		if (transmitter.disconnectWith(device)) {
+			connectedDevices.remove(device);
+			menu.removeCommands(device.getID());
+		}
 	}
 	
 	private void sendCommand(String command) {
-		// TODO if connected to a device
-		String response = transmitter.sendCommand(command);
-		System.out.println("Response: " + response);
+		if (connectedDevices.size() > 0) {
+			String response = transmitter.sendCommand(command);
+			System.out.println("Response: " + response);
+		}
 	}
 	
 	

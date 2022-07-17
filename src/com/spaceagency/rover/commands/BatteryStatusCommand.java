@@ -10,6 +10,6 @@ public class BatteryStatusCommand implements Command {
 	}
 	
 	public String execute() {
-		return battery.getStatus();
+		return battery.getBattery();
 	}
 }

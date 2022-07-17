@@ -30,7 +30,6 @@ public class Rover {
 	
 	private Rover(String id, Position initialPosition, Direction direction, int port) {
 		this.id = id;
-		// TODO: dave log files about connections and status
 		System.out.println(new File("/asd").exists());
 		battery = new Battery();
 		antenna = new Antenna(3, battery);
@@ -57,8 +56,8 @@ public class Rover {
 	
 	
 	@RemoteCommand
-	public String getStatus() {
-		return battery.getStatus() + " " + solarPanel.getStatus() + " " + weatherStation.getInfo();
+	public String allStatus() {
+		return battery.getBattery() + " " + solarPanel.getStatus() + " " + weatherStation.getWeather();
 	}
 	
 	

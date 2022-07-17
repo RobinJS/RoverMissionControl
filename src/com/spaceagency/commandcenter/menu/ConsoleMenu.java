@@ -8,7 +8,7 @@ public class ConsoleMenu {
 	private static ConsoleMenu instance;
 	private	Scanner in;
 	
-	private Map<String, ArrayList<String>> commands = new HashMap<>();
+	private Map<String, ArrayList<String>> deviceToCommands = new HashMap<>();
 	
 	private ConsoleMenu() { }
 	
@@ -21,7 +21,7 @@ public class ConsoleMenu {
 	}
 	
 	private void init() {
-		commands.put("", new ArrayList<>(Arrays.asList("help", "connect", "disconnect")));
+		deviceToCommands.put("", new ArrayList<>(Arrays.asList("help", "connect", "disconnect")));
 		in = new Scanner(System.in);
 		System.out.println("Enter 'help' to see available commands. Submenu example: Rover getStatus");
 	}
@@ -39,23 +39,25 @@ public class ConsoleMenu {
 		if (commandParts.length > 0 && commandParts.length < 3) {
 			if (commandParts.length == 1) commandParts = new String[] {"", command};
 			
-			ArrayList<String> possibleSubcommands = commands.get(commandParts[0]);
+			ArrayList<String> possibleSubcommands = deviceToCommands.get(commandParts[0]);
 			
 			if (possibleSubcommands.size() > 0 && possibleSubcommands.contains(commandParts[1])) {
-				validated = command;
+				validated = commandParts[1];
 			}
 		}
 		
 		return validated;
 	}
 	
-	public void addCommands(String deviceID, Map<String, ArrayList<String>> commandsMap) {
-		commands = Stream.of(commands, commandsMap)
-				.flatMap(map -> map.entrySet().stream())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	public void addCommands(String deviceID, ArrayList<String> remoteCommands) {
+		deviceToCommands.put(deviceID, remoteCommands);
+	}
+	
+	public void removeCommands(String devideID) {
+		deviceToCommands.remove(devideID);
 	}
 	
 	public void printAllCommands() {
-		commands.forEach((k, v) -> System.out.println(k + " " + v));
+		deviceToCommands.forEach((k, v) -> System.out.println(k + " " + v));
 	}
 }

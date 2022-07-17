@@ -12,7 +12,7 @@ public class WeatherStation extends ElectricalInstrument {
 	}
 	
 	@RemoteCommand
-	public String getInfo() {
+	public String getWeather() {
 		String status = "uknown";
 		
 		if (battery.hasPower(consumedPower)) {

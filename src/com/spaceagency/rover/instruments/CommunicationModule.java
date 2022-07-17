@@ -5,7 +5,6 @@ import com.spaceagency.rover.commands.CommandExecutor;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
 
 public class CommunicationModule {
@@ -54,14 +53,13 @@ public class CommunicationModule {
 				
 				System.out.println("New connection registered.");
 //				out.println(commandExecutor.getRemoteCommands());
-				Map<String, ArrayList<String>> commands = commandExecutor.getRemoteCommands();
+				ArrayList<String> commands = commandExecutor.getRemoteCommands();
 				out.writeObject(commands);
 				
 				String input;
 				while ((input = in.readLine()) != null) {
 					String response = commandExecutor.runCommand(input);
 					commandResponse.println(response);
-					// TODO maybe send JSON String and parse it
 				}
 				
 			} catch (IOException e) {

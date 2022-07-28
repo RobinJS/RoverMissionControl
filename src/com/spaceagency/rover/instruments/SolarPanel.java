@@ -13,7 +13,7 @@ public class SolarPanel extends ElectricalInstrument implements Charger {
 	public String getStatus() {
 		String statusWord = unfolded ? "unfolded" : "folded";
 		String producingWord = exposedToLight ? "yes" : "no";
-		return "Solar panel is " + statusWord + ". Exposed to light: " + producingWord; // to do json?
+		return String.format("Solar panel is %1$s. Exposed to light: %2$s", statusWord, producingWord); // to do json?
 	}
 	
 	public void unfold() { // bool

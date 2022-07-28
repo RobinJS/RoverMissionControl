@@ -12,12 +12,12 @@ public class WeatherStation extends ElectricalInstrument {
 	}
 	
 	@RemoteCommand
-	public String getWeather() {
+	public String weather() {
 		String status = "uknown";
 		
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
-			status = "Environment - temp: " + getTemperatureInCelsius() + "C, humidity: " + getHumidity();
+			status = "Temperature: " + getTemperatureInCelsius() + "C, humidity: " + getHumidity() + ".";
 		}
 		else {
 			System.out.println("Cannot get Environment status. Not enough power.");

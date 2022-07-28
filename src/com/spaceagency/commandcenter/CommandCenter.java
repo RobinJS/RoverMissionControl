@@ -12,7 +12,7 @@ public class CommandCenter {
 	private ArrayList<Device> connectedDevices = new ArrayList<>();
 	ConsoleMenu menu = ConsoleMenu.getInstance();
 	
-	// to do: database with devices to connect to. add/remove device
+	// to do: database with users
 	/* to do: stream online connection. Listen for connection lost.
 		* return connection status. notify on success
 		* retry connection

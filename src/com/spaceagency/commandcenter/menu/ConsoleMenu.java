@@ -41,7 +41,7 @@ public class ConsoleMenu {
 			
 			ArrayList<String> possibleSubcommands = deviceToCommands.get(commandParts[0]);
 			
-			if (possibleSubcommands.size() > 0 && possibleSubcommands.contains(commandParts[1])) {
+			if (possibleSubcommands != null && possibleSubcommands.size() > 0 && possibleSubcommands.contains(commandParts[1])) {
 				validated = commandParts[1];
 			}
 		}

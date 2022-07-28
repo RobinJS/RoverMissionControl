@@ -10,6 +10,6 @@ public class WeatherStationStatusCommand implements Command {
 	}
 	
 	public String execute() {
-		return weatherStation.getWeather();
+		return weatherStation.weather();
 	}
 }

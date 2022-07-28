@@ -38,7 +38,7 @@ public class Battery {
 	
 	@RemoteCommand
 	public String getBattery() {
-		return String.format("Battery: %s%%", percentage);
+		return String.format("Battery: %s%%.", percentage);
 	}
 	
 	public void setCharger(Charger charger) {

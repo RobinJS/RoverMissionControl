@@ -1,21 +1,15 @@
 package com.spaceagency.rover.commands;
 
-import com.spaceagency.rover.instruments.Battery;
-import com.spaceagency.rover.instruments.SolarPanel;
-import com.spaceagency.rover.instruments.WeatherStation;
+import com.spaceagency.rover.Rover;
 
 class RoverStatusCommand implements Command {
-	Battery battery;
-	SolarPanel solarPanel;
-	WeatherStation weatherStation;
+	Rover rover;
 	
-	public RoverStatusCommand(Battery battery, SolarPanel solarPanel, WeatherStation weatherStation) {
-		this.battery = battery;
-		this.solarPanel = solarPanel;
-		this.weatherStation = weatherStation;
+	public RoverStatusCommand(Rover rover) {
+		this.rover = rover;
 	}
 	
 	public String execute() {
-		return battery.getBattery() + " " + solarPanel.getStatus() + " " + weatherStation.getWeather();
+		return rover.allStatus();
 	}
 }

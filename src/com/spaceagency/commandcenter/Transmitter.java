@@ -28,6 +28,8 @@ public class Transmitter {
 			System.out.printf("Connected to %s:%s.%nMore commands available.%n", url, port);
 			
 			remoteCommands = (ArrayList<String>) in.readObject();
+			
+//			clientSocket.
 
 		} catch (IOException | ClassNotFoundException e) {
 			System.out.printf("Could not connected to %s:%s%n", url, port);

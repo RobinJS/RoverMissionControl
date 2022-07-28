@@ -18,7 +18,7 @@ public class CommunicationModule {
 	public void start(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
-        		while (true) new ClientHandler(serverSocket.accept()).start();
+			while (!serverSocket.isClosed()) new ClientHandler(serverSocket.accept()).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

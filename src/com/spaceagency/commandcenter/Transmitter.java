@@ -1,9 +1,10 @@
 package com.spaceagency.commandcenter;
 
+import com.spaceagency.commandcenter.devices.Device;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,8 +33,8 @@ public class Transmitter {
 //			clientSocket.
 
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.printf("Could not connected to %s:%s%n", url, port);
-			e.printStackTrace();
+			System.out.printf("Could not connected to %s:%s. Remote server may not be running.%n", url, port);
+//			e.printStackTrace();
 		}
 		
 		return remoteCommands;

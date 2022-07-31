@@ -1,4 +1,4 @@
-package com.spaceagency.commandcenter;
+package com.spaceagency.commandcenter.devices;
 
 public class Device {
 	private final String ID;

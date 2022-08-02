@@ -40,9 +40,10 @@ public class CommandCenter {
 		Device found = getDeviceById(inputID);
 		if (found == null) {
 			devices.add(new Device(inputID, "localhost", 1234)); // TODO url and port
+			System.out.println("New device added: " + inputID);
 		}
 		else {
-			System.out.println("Device with ID " + inputID + " already exists!");
+			System.out.println("Device with ID " + inputID + " already exists.");
 		}
 	}
 	
@@ -55,9 +56,10 @@ public class CommandCenter {
 		Device found = getDeviceById(inputID);
 		if (found != null) {
 			devices.remove(found);
+			System.out.println("Device removed: " + inputID);
 		}
 		else {
-			System.out.println("Device with ID " + inputID + " was not found!");
+			System.out.println("Device with ID " + inputID + " was not found.");
 		}
 	}
 	
@@ -78,7 +80,7 @@ public class CommandCenter {
 			
 		}
 		else {
-			System.out.println("Device with ID " + option.params.get(0) + " does not exist!");
+			System.out.println("Device with ID " + option.params.get(0) + " does not exist.");
 		}
 	}
 	

@@ -41,14 +41,9 @@ public class ConsoleMenu {
 	
 	public void awaitCommands() {
 		while(true) {
-//			onCommandEntered(evaluateCommand(in.nextLine()));
 			runCommand(validateInput(in.nextLine()));
 		}
 	}
-	
-//	public String awaitUserCommand() {
-//		return validateCommand(in.nextLine());
-//	}
 	
 	private void runCommand(MenuOption input) {
 		if (input != null) {
@@ -94,9 +89,17 @@ public class ConsoleMenu {
 	
 	public void onDeviceConnected(String deviceID, List<String> remoteCommands) {
 		// TODO create MenuOptions from remoteCommands
-		deviceToMenuOptions.put(deviceID, getCommandOptions(remoteCommands));
+		List<MenuOption> modifiedDeviceOptions = getCommandOptions(remoteCommands);
+		modifyDeviceOptions(modifiedDeviceOptions);
+		
+		deviceToMenuOptions.put(deviceID, modifiedDeviceOptions);
 		currentDeviceMenu = deviceID;
 		System.out.println("More commands available.");
+	}
+	
+	private void modifyDeviceOptions(List<MenuOption> deviceOptions) {
+		deviceOptions.add(new MenuOption("menu"));
+		deviceOptions.add(new MenuOption("disconnect"));
 	}
 	
 	private List<MenuOption> getCommandOptions(List<String> remoteCommands) {

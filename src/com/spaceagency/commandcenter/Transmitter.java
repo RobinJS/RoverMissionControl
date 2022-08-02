@@ -26,7 +26,7 @@ public class Transmitter {
 			in = new ObjectInputStream(clientSocket.getInputStream());
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			commandResponse = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			System.out.printf("Connected to %s:%s.%nMore commands available.%n", url, port);
+			System.out.printf("Connected to %s:%s.%n", url, port);
 			
 			remoteCommands = (ArrayList<String>) in.readObject();
 			

@@ -1,5 +1,6 @@
 package com.spaceagency.rover.commands;
 
+import com.spaceagency.common.MenuOption;
 import com.spaceagency.rover.Rover;
 import com.spaceagency.rover.instruments.*;
 import com.spaceagency.rover.interfaces.RemoteCommand;
@@ -40,13 +41,12 @@ public class CommandExecutor {
 		availableCommands.put("turnRight", new TurnRightCommand(movementModule));
 	}
 	
-	public String runCommand(String requestedCommand) {
-		if (availableCommands.containsKey(requestedCommand)) return availableCommands.get(requestedCommand).execute();
-		else return "Invalid command: " + requestedCommand;
+	public String runCommand(MenuOption requestedCommand) {
+		if (availableCommands.containsKey(requestedCommand.command)) return availableCommands.get(requestedCommand.command).execute();
+		else return "Invalid command: " + requestedCommand.command;
 	}
 	
 	public ArrayList<String> getRemoteCommands() {
-		// TODO: compare this logic with the one in initCommands. Maby use this one only
 		ArrayList<String> commandsMap = new ArrayList<>();
 		
 		commandsMap.addAll(getCommandsFor(rover));

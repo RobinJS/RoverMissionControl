@@ -1,5 +1,6 @@
 package com.spaceagency.rover.instruments;
 
+import com.spaceagency.common.MenuOption;
 import com.spaceagency.rover.commands.CommandExecutor;
 
 import java.io.*;
@@ -33,56 +34,42 @@ public class CommunicationModule {
     }
 	
 	private static class ClientHandler extends Thread {
-        private final Socket clientSocket;
-		//		private CommandExecutor commandExecutor;
+        private final Socket handledSocket;
 
         public ClientHandler(Socket socket) {
-            this.clientSocket = socket;
-//			this.commandExecutor = commandExecutor;
+            this.handledSocket = socket;
         }
 
         public void run() {
-			BufferedReader in = null;
+			ObjectInputStream in = null;
 			ObjectOutputStream out = null;
 			PrintWriter commandResponse = null;
 			
 			try {
-				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				out = new ObjectOutputStream(clientSocket.getOutputStream());
-				commandResponse = new PrintWriter(clientSocket.getOutputStream(), true);
+				out = new ObjectOutputStream(handledSocket.getOutputStream());
+				in = new ObjectInputStream(handledSocket.getInputStream());
+				commandResponse = new PrintWriter(handledSocket.getOutputStream(), true);
 				
 				System.out.println("New connection registered.");
-//				out.println(commandExecutor.getRemoteCommands());
 				ArrayList<String> commands = commandExecutor.getRemoteCommands();
 				out.writeObject(commands);
 				
-				String input;
-				while ((input = in.readLine()) != null) {
+				MenuOption input;
+				while ((input = (MenuOption) in.readObject()) != null) {
 					String response = commandExecutor.runCommand(input);
 					commandResponse.println(response);
 				}
 				
 			} catch (IOException e) {
 				System.out.println("Lost connection with Command Center.");
-//				e.printStackTrace();
-			}
-			finally {
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} finally {
 				try {
 					Objects.requireNonNull(in).close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				try {
 					Objects.requireNonNull(out).close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				Objects.requireNonNull(commandResponse).close();
-				
-				try {
-					clientSocket.close();
+					Objects.requireNonNull(commandResponse).close();
+					handledSocket.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

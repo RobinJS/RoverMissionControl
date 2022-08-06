@@ -11,13 +11,13 @@ import java.io.File;
 public class Rover {
 	private final String id;
 	
-	private Battery battery;
-	private SolarPanel solarPanel;
-	private Camera camera;
-	private WeatherStation weatherStation;
-	private Antenna antenna;
+	private final Battery battery;
+	private final SolarPanel solarPanel;
+	private final Camera camera;
+	private final WeatherStation weatherStation;
+	private final Antenna antenna;
 	private static CommunicationModule communicationModule;
-	private MovementModule movementModule;
+	private final MovementModule movementModule;
 	
 	public String getId() {
 		return id;

@@ -1,6 +1,7 @@
 package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.devices.Device;
+import com.spaceagency.common.MenuOption;
 
 import java.io.*;
 import java.net.*;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class Transmitter {
-	private Socket clientSocket;
-	private PrintWriter out;
+	private Socket socket;
+	private ObjectOutputStream out;
 	private BufferedReader commandResponse;
 	private ObjectInputStream in;
 	
@@ -21,32 +22,28 @@ public class Transmitter {
 		ArrayList<String> remoteCommands = null;
 		
 		try {
-			clientSocket = new Socket(url, port);
-			OutputStream outputStream = clientSocket.getOutputStream();
-			in = new ObjectInputStream(clientSocket.getInputStream());
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			commandResponse = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			socket = new Socket(url, port);
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
+			commandResponse = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			System.out.printf("Connected to %s:%s.%n", url, port);
 			
 			remoteCommands = (ArrayList<String>) in.readObject();
 			
-//			clientSocket.
-
 		} catch (IOException | ClassNotFoundException e) {
 			System.out.printf("Could not connected to %s:%s. Remote server may not be running.%n", url, port);
-//			e.printStackTrace();
 		}
 		
 		return remoteCommands;
 	}
 	
-	public String sendCommand(String command) {
+	public String sendCommand(MenuOption command) {
 		String resp = null;
 		try {
-			out.println(command);
+			out.writeObject(command);
 			resp = commandResponse.readLine();
 		} catch (IOException e) {
-			e.printStackTrace();
+		
 		}
 		return resp;
 	}
@@ -56,22 +53,9 @@ public class Transmitter {
 		int port = device.getPort();
 		
 		try {
-			clientSocket.close();
-		} catch (IOException e) {
-			System.out.printf("Could not disconnect from %s:%s%n", url, port);
-			e.printStackTrace();
-		}
-		
-		try {
+			socket.close();
 			in.close();
-		} catch (IOException e) {
-			System.out.printf("Could not disconnect from %s:%s%n", url, port);
-			e.printStackTrace();
-		}
-		
-		out.close();
-		
-		try {
+			out.close();
 			commandResponse.close();
 		} catch (IOException e) {
 			System.out.printf("Could not disconnect from %s:%s%n", url, port);

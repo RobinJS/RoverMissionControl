@@ -2,23 +2,16 @@ package com.spaceagency.commandcenter;
 
 import com.spaceagency.commandcenter.devices.Device;
 import com.spaceagency.commandcenter.menu.ConsoleMenu;
-import com.spaceagency.commandcenter.menu.MenuOption;
-import com.spaceagency.rover.interfaces.RemoteCommand;
+import com.spaceagency.common.MenuOption;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class CommandCenter {
-	private Transmitter transmitter;
-	private ArrayList<Device> devices = new ArrayList<>();
+	private final Transmitter transmitter;
+	private final ArrayList<Device> devices = new ArrayList<>();
+	private Device connectedDevice;
 	private final ConsoleMenu menu;
-	
-	// to do: database with users
-	/* to do: stream online connection. Listen for connection lost.
-		* return connection status. notify on success
-		* retry connection
-		* stay connected to multiple devices
-	* */
 	
 	public static void main(String[] args) {
         CommandCenter commandCenter = new CommandCenter();
@@ -26,20 +19,15 @@ public class CommandCenter {
 	
 	private CommandCenter() {
 		transmitter = new Transmitter();
-		/* Test */
-//		devices.add(new Device("Curiosity", "localhost", 1234));
-		/**/
-		
 		menu = ConsoleMenu.getInstance(this);
 		menu.awaitCommands();
-		
 	}
 	
 	public void onAddCommand(MenuOption option) {
 		String inputID = option.params.get(0);
 		Device found = getDeviceById(inputID);
 		if (found == null) {
-			devices.add(new Device(inputID, "localhost", 1234)); // TODO url and port
+			devices.add(new Device(inputID, "localhost", 1234));
 			System.out.println("New device added: " + inputID);
 		}
 		else {
@@ -55,12 +43,16 @@ public class CommandCenter {
 		String inputID = option.params.get(0);
 		Device found = getDeviceById(inputID);
 		if (found != null) {
-			devices.remove(found);
+			removeDevice(found);
 			System.out.println("Device removed: " + inputID);
 		}
 		else {
 			System.out.println("Device with ID " + inputID + " was not found.");
 		}
+	}
+	
+	private void removeDevice(Device device) {
+		devices.remove(device);
 	}
 	
 	public void connect(MenuOption option) {
@@ -72,6 +64,7 @@ public class CommandCenter {
 			// TODO test connection lost with the rover and remove commands on disconnect
 			if (remoteCommands != null && remoteCommands.size() > 0) {
 	//			devices.add(device);
+				connectedDevice = addedDevice;
 				menu.onDeviceConnected(devices.get(0).getID(), remoteCommands);
 			}
 			else {
@@ -92,9 +85,9 @@ public class CommandCenter {
 		if (devices.size() == 0) {
 			System.out.println("There are no connected devices.");
 		}
-		else if (transmitter.disconnectWith(devices.get(0))) { // TODO try-catch?
-			devices.remove(devices.get(0));
-			menu.onDeviceDisconnected(devices.get(0).getID());
+		else if (transmitter.disconnectWith(connectedDevice)) {
+			menu.onDeviceDisconnected(connectedDevice.getID());
+			connectedDevice = null;
 		}
 	}
 	
@@ -111,10 +104,17 @@ public class CommandCenter {
 		}
 	}
 	
-	public void sendCommand(String command) {
+	public void sendCommand(MenuOption command) {
 		if (devices.size() > 0) {
 			String response = transmitter.sendCommand(command);
-			System.out.println("Response: " + response);
+			if (response == null) {
+				System.out.println("Lost connection with " + connectedDevice.getID());
+				menu.onDeviceDisconnected(connectedDevice.getID());
+				connectedDevice = null;
+			}
+			else {
+				System.out.println("Response: " + response);
+			}
 		}
 	}
 	

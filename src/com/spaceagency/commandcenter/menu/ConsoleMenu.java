@@ -1,6 +1,7 @@
 package com.spaceagency.commandcenter.menu;
 
 import com.spaceagency.commandcenter.CommandCenter;
+import com.spaceagency.common.MenuOption;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,9 +54,9 @@ public class ConsoleMenu {
 				case "add": commandCenter.onAddCommand(input); break;
 				case "remove": commandCenter.onRemoveCommand(input); break;
 				case "connect": commandCenter.connect(input); break;
-//				case "disconnect": commandCenter.disconnect(); break;
+				case "disconnect": commandCenter.disconnect(); break;
 				default:
-					commandCenter.sendCommand("input");
+					commandCenter.sendCommand(input);
 			}
 		}
 	}

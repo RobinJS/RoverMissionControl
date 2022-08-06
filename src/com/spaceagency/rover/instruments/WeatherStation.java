@@ -17,7 +17,7 @@ public class WeatherStation extends ElectricalInstrument {
 		
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
-			status = "Temperature: " + getTemperatureInCelsius() + "C, humidity: " + getHumidity() + ".";
+			status = "Temperature: " + getTemperatureInCelsius() + "C, humidity: " + getHumidity() + "%.";
 		}
 		else {
 			System.out.println("Cannot get Environment status. Not enough power.");

@@ -1,8 +1,9 @@
-package com.spaceagency.commandcenter.menu;
+package com.spaceagency.common;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MenuOption {
+public class MenuOption implements Serializable {
 	public String command;
 	public List<String> params;
 	public String requiredParams;

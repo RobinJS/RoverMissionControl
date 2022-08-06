@@ -4,7 +4,7 @@ import com.spaceagency.rover.interfaces.Charger;
 
 public class SolarPanel extends ElectricalInstrument implements Charger {
 	private boolean unfolded = false;
-	private boolean exposedToLight = true; // to do
+	private boolean exposedToLight = true;
 	
 	public SolarPanel(int consumedPower, Battery battery) {
 		super(consumedPower, battery);
@@ -13,10 +13,10 @@ public class SolarPanel extends ElectricalInstrument implements Charger {
 	public String getStatus() {
 		String statusWord = unfolded ? "unfolded" : "folded";
 		String producingWord = exposedToLight ? "yes" : "no";
-		return String.format("Solar panel is %1$s. Exposed to light: %2$s", statusWord, producingWord); // to do json?
+		return String.format("Solar panel is %1$s. Exposed to light: %2$s", statusWord, producingWord);
 	}
 	
-	public void unfold() { // bool
+	public void unfold() {
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
 			unfolded = true;

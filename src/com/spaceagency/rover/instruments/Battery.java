@@ -9,7 +9,7 @@ import java.util.TimerTask;
 public class Battery {
 	private int percentage = 100;
 	private static final int MAX_CHARGE = 100;
-	private Charger charger; // to do: or directly SolarPanel?
+	private Charger charger;
 	
 	public Battery() {
 		int timeOffsetSec = 5;

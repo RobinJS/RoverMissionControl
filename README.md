@@ -3,6 +3,8 @@ Use Command Center API to send commands and receive data from a Rover, exploring
 
 Example usage:
 
-> add Curiosity
-> connect Curiosity
-> allStatus
+```sh
+add Curiosity
+connect Curiosity
+allStatus
+```

@@ -13,7 +13,7 @@ public class WeatherStation extends ElectricalInstrument {
 	
 	@RemoteCommand
 	public String weather() {
-		String status = "uknown";
+		String status = "unknown";
 		
 		if (battery.hasPower(consumedPower)) {
 			battery.consume(consumedPower);
@@ -30,13 +30,12 @@ public class WeatherStation extends ElectricalInstrument {
 		float min = -128f;
 		float max = 21f;
 		float temp = min + new Random().nextFloat() * (max - min);
-		String str = String.format(Locale.US, "%.2f", 55.25);
-		float result = Float.parseFloat(str);
-		return result;
+		String str = String.format(Locale.US, "%.2f", temp);
+		return Float.parseFloat(str);
 	}
 	
 	public int getHumidity() {
-		return new Random().nextInt(100-50) + 50;
+		return new Random().nextInt(50) + 50;
 	}
 	
 	@Override

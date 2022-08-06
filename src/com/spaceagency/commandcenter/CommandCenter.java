@@ -22,7 +22,7 @@ public class CommandCenter {
 		menu = ConsoleMenu.getInstance(this);
 		menu.awaitCommands();
 	}
-	
+	// TODO unit tests
 	public void onAddCommand(MenuOption option) {
 		String inputID = option.params.get(0);
 		Device found = getDeviceById(inputID);
@@ -61,14 +61,10 @@ public class CommandCenter {
 		
 		if (addedDevice != null) {
 			ArrayList<String> remoteCommands = transmitter.connectWith(addedDevice);
-			// TODO test connection lost with the rover and remove commands on disconnect
+			
 			if (remoteCommands != null && remoteCommands.size() > 0) {
-	//			devices.add(device);
 				connectedDevice = addedDevice;
 				menu.onDeviceConnected(devices.get(0).getID(), remoteCommands);
-			}
-			else {
-				// TODO
 			}
 			
 		}

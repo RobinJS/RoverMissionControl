@@ -60,7 +60,7 @@ public class ConsoleMenu {
 			}
 		}
 	}
-	
+	// TODO unit tests
 	private MenuOption validateInput(String input) {
 		input = input.trim();
 		
@@ -89,7 +89,6 @@ public class ConsoleMenu {
 	}
 	
 	public void onDeviceConnected(String deviceID, List<String> remoteCommands) {
-		// TODO create MenuOptions from remoteCommands
 		List<MenuOption> modifiedDeviceOptions = getCommandOptions(remoteCommands);
 		modifyDeviceOptions(modifiedDeviceOptions);
 		

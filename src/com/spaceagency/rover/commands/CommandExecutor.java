@@ -29,7 +29,7 @@ public class CommandExecutor {
 		
 		initCommands();
 	}
-	
+	// TODO unit tests
 	private void initCommands() {
 		availableCommands.put("allStatus", new RoverStatusCommand(rover));
 		availableCommands.put("weather", new WeatherStationStatusCommand(weatherStation));

@@ -95,7 +95,7 @@ public class ConsoleMenu {
 		
 		deviceToMenuOptions.put(deviceID, modifiedDeviceOptions);
 		currentDeviceMenu = deviceID;
-		System.out.println("More commands available.");
+		System.out.println("More commands available. Enter 'menu' to see them.");
 	}
 	
 	private void modifyDeviceOptions(List<MenuOption> deviceOptions) {
